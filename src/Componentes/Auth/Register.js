@@ -4,11 +4,21 @@ import {Link} from "react-router-dom";
 import "./Register.css";
 
 class Register extends Component {
-  onChangeHandler = () => {
+  state = {
+    username: "",
+    umail: "",
+    password: null,
+    passwordConfirmation: null
+  }
 
+  onChangeHandler = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   render() {
+    console.log(this.state);
     return (
       <Grid textAlign="center" verticalAlign="middle" className="registerPage">
         <GridColumn style={{maxWidth: 450}}>
