@@ -6,7 +6,7 @@ import "./Register.css";
 class Register extends Component {
   state = {
     username: "",
-    umail: "",
+    email: "",
     password: null,
     passwordConfirmation: null
   }
@@ -18,7 +18,8 @@ class Register extends Component {
   }
 
   render() {
-    console.log(this.state);
+    const {username, email, password, passwordConfirmation} = this.state;
+
     return (
       <Grid textAlign="center" verticalAlign="middle" className="registerPage">
         <GridColumn style={{maxWidth: 450}}>
@@ -34,6 +35,7 @@ class Register extends Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="Username"
+                value={username}
                 onChange={this.onChangeHandler}
               />
 
@@ -43,6 +45,7 @@ class Register extends Component {
                 icon="mail"
                 iconPosition="left"
                 placeholder="Email Address"
+                value={email}
                 onChange={this.onChangeHandler}
               />
 
@@ -52,6 +55,7 @@ class Register extends Component {
                 icon="lock"
                 iconPosition="left"
                 placeholder="Password"
+                value={password}
                 onChange={this.onChangeHandler}
               />
 
@@ -61,6 +65,7 @@ class Register extends Component {
                 icon="repeat"
                 iconPosition="left"
                 placeholder="Password Confirmation"
+                value={passwordConfirmation}
                 onChange={this.onChangeHandler}
               />
 
