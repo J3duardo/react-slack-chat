@@ -9,7 +9,39 @@ class Register extends Component {
     username: "",
     email: "",
     password: "",
-    passwordConfirmation: ""
+    passwordConfirmation: "",
+    errors: []
+  }
+
+  isFormValid = () => {
+    let errors = [];
+    let error;
+
+    if(this.isFormEmpty(this.state)) {
+      error = {message: "Debe completar todos los campos"};
+      this.setState({errors: errors.concat(error)});
+      return false;
+    } else if(!this.isPasswordValid(this.state)) {
+      error = {message: "Contraseña inválida"};
+      this.setState({errors: errors.concat(error)});
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  isFormEmpty = (state) => {
+    return !state.username.length || !state.email.length || !state.password.length || !state.passwordConfirmation.length;
+  }
+
+  isPasswordValid = (state) => {
+    if(state.password.length < 6 || state.passwordConfirmation < 6) {
+      return false;
+    } else if(state.password !== state.passwordConfirmation) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   onChangeHandler = (event) => {
@@ -19,16 +51,18 @@ class Register extends Component {
   }
 
   onSubmitHandler = (event) => {
-    event.preventDefault();
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(createdUser => {
-        console.log(createdUser)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    if(this.isFormValid()) {
+      event.preventDefault();
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(createdUser => {
+          console.log(createdUser)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 
   render() {
