@@ -65,8 +65,14 @@ class Register extends Component {
     }
   }
 
+  displayError = (errors) => {
+    return errors.map((error, i) => {
+      return <p key={i}>{error.message}</p>
+    })
+  }
+
   render() {
-    const {username, email, password, passwordConfirmation} = this.state;
+    const {username, email, password, passwordConfirmation, errors} = this.state;
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="registerPage">
@@ -120,6 +126,12 @@ class Register extends Component {
               <Button color="orange" fluid size="large">Submit</Button>
             </Segment>
           </Form>
+          {errors.length > 0 && (
+            <Message error>
+              <h3>Error</h3>
+              {this.displayError(errors)}
+            </Message>
+          )}
           <Message>
             Already a user? <Link to="/login">Login</Link>
           </Message>
