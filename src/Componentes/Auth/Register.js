@@ -75,6 +75,10 @@ class Register extends Component {
     })
   }
 
+  inputErrorClassName = (errs, inputName) => {
+    return errs.some(err => err.message.toLowerCase().includes(inputName)) ? "error" : ""
+  }
+
   render() {
     const {username, email, password, passwordConfirmation, errors, loading} = this.state;
 
@@ -89,6 +93,7 @@ class Register extends Component {
             <Segment stacked>
               <Form.Input
                 fluid name="username"
+                className={this.inputErrorClassName(errors, "username")}
                 type="text"
                 icon="user"
                 iconPosition="left"
@@ -99,6 +104,7 @@ class Register extends Component {
 
               <Form.Input
                 fluid name="email"
+                className={this.inputErrorClassName(errors, "email")}
                 type="email"
                 icon="mail"
                 iconPosition="left"
@@ -109,6 +115,7 @@ class Register extends Component {
 
               <Form.Input
                 fluid name="password"
+                className={this.inputErrorClassName(errors, "password")}
                 type="password"
                 icon="lock"
                 iconPosition="left"
@@ -119,6 +126,7 @@ class Register extends Component {
 
               <Form.Input
                 fluid name="passwordConfirmation"
+                className={this.inputErrorClassName(errors, "password")}
                 type="password"
                 icon="repeat"
                 iconPosition="left"
