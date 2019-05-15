@@ -17,6 +17,10 @@ class Register extends Component {
     })
   }
 
+  onSubmitHandler = (event) => {
+    event.preventDefault();
+  }
+
   render() {
     const {username, email, password, passwordConfirmation} = this.state;
 
@@ -27,7 +31,7 @@ class Register extends Component {
             <Icon name="puzzle piece"/>
             Register for DevChat
           </Header>
-          <Form size="large">
+          <Form size="large" onSubmit={this.onSubmitHandler}>
             <Segment stacked>
               <Form.Input
                 fluid name="username"
