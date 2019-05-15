@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './Componentes/App';
 import Login from "./Componentes/Auth/Login";
 import Register from "./Componentes/Auth/Register";
 import registerServiceWorker from './registerServiceWorker';
 
+import 'semantic-ui-css/semantic.min.css';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
 const ComponenteRoot = () => {
