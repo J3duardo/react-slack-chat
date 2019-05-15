@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {Grid, Header, Form, Segment, Button, Message, Icon, GridColumn} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import "./Register.css";
+import firebase from "../../firebase";
 
 class Register extends Component {
   state = {
     username: "",
     email: "",
-    password: null,
-    passwordConfirmation: null
+    password: "",
+    passwordConfirmation: ""
   }
 
   onChangeHandler = (event) => {
@@ -19,6 +20,15 @@ class Register extends Component {
 
   onSubmitHandler = (event) => {
     event.preventDefault();
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(createdUser => {
+        console.log(createdUser)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   render() {
