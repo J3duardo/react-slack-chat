@@ -22,6 +22,22 @@ class Login extends Component {
     event.preventDefault();
     if(this.isFormValid(this.state)) {
       this.setState({errors: [], loading: true})
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(loggedUser => {
+          console.log(loggedUser)
+          this.setState({
+            loading: false
+          })
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({
+            errors: this.state.errors.concat(err),
+            loading: false
+          })
+        })
     }
   }
 
