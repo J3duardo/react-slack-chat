@@ -9,6 +9,12 @@ import firebase from "./firebase";
 import 'semantic-ui-css/semantic.min.css';
 import {BrowserRouter, Switch, Route, withRouter} from "react-router-dom";
 
+import {createStore} from "redux";
+import {Provider} from "react-redux";
+import {composeWithDevTools} from "redux-devtools-extension";
+
+const store = createStore(() => {}, composeWithDevTools());
+
 class ComponenteRoot extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -32,9 +38,11 @@ class ComponenteRoot extends Component {
 const RootWithAuth = withRouter(ComponenteRoot)
 
 ReactDOM.render(
-  <BrowserRouter>
-    <RootWithAuth />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <RootWithAuth />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 
