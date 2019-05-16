@@ -110,7 +110,7 @@ class Register extends Component {
     return (
       <Grid textAlign="center" verticalAlign="middle" className="registerPage">
         <GridColumn style={{maxWidth: 450}}>
-          <Header as="h2" icon color="orange" textAlign="center">
+          <Header as="h1" icon color="orange" textAlign="center">
             <Icon name="puzzle piece"/>
             Register for DevChat
           </Header>
