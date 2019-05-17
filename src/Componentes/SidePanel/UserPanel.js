@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import{Grid, Header, Icon, Dropdown} from "semantic-ui-react";
+import{Grid, Header, Icon, Dropdown, Image} from "semantic-ui-react";
 import firebase from "../../firebase";
 import {connect} from "react-redux";
 
@@ -41,7 +41,12 @@ class UserPanel extends Component {
           </Grid.Row>
           <Header style={{padding: "0.25rem"}} as="h4" inverted>
             <Dropdown
-              trigger={<span>{this.props.userName}</span>}
+              trigger={
+                <span>
+                  <Image src={this.props.userAvatar} spaced="right" avatar/>
+                  {this.props.userName}
+                </span>
+              }
               options={this.dropdownOptions()}
             />
           </Header>
@@ -53,7 +58,8 @@ class UserPanel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.user.currentUser ? state.user.currentUser.displayName : "Cargando..."
+    userName: state.user.currentUser ? state.user.currentUser.displayName : "Cargando...",
+    userAvatar: state.user.currentUser ? state.user.currentUser.photoURL : "Cargando..."
   }
 }
 
