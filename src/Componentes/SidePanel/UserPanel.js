@@ -53,7 +53,7 @@ class UserPanel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.user.currentUser ? state.user.currentUser.displayName : "User not logged in"
+    userName: state.user.currentUser ? state.user.currentUser.displayName : "Cargando..."
   }
 }
 
