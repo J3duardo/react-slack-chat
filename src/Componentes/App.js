@@ -8,7 +8,7 @@ import './App.css';
 
 const App = () => {
   return (
-    <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee", textAlign: "center", alignItems: "center"}}>
+    <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee"}}>
       <ColorPanel />
       <SidePanel />
       <Grid.Column style={{marginLeft: 320}}>
