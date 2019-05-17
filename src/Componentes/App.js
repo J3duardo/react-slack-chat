@@ -8,11 +8,15 @@ import './App.css';
 
 const App = () => {
   return (
-    <Grid>
+    <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee", textAlign: "center", alignItems: "center"}}>
       <ColorPanel />
       <SidePanel />
-      <Messages />
-      <MetaPanel />
+      <Grid.Column style={{marginLeft: 320}}>
+        <Messages />
+      </Grid.Column>
+      <Grid.Column>
+        <MetaPanel width={4}/>
+      </Grid.Column>
     </Grid>
   )
 }
