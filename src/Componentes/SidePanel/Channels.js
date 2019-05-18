@@ -13,6 +13,10 @@ class Channels extends Component {
     this.setState({modal: false})
   }
 
+  openModal = () => {
+    this.setState({modal: true})
+  }
+
   onChangeHandler = (event) => {
     this.setState({[event.target.name]: event.target.value})
   }
@@ -25,7 +29,7 @@ class Channels extends Component {
             <span>
               <Icon name="exchange"/> Channels
             </span>{" "}
-            ({this.state.channels.length}) <Icon name="add"/>
+            ({this.state.channels.length}) <Icon name="add" onClick={this.openModal}/>
           </Menu.Item>
         </Menu.Menu>
 
