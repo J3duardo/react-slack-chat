@@ -11,8 +11,8 @@ class Channels extends Component {
       <Menu.Menu style={{paddingBottom: "2rem"}}>
         <Menu.Item>
           <span>
-            <Icon name="exchange"/>
-          </span>
+            <Icon name="exchange"/> Channels
+          </span>{" "}
           ({this.state.channels.length}) <Icon name="add"/>
         </Menu.Item>
       </Menu.Menu>
