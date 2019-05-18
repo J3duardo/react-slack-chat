@@ -14,7 +14,8 @@ class Channels extends Component {
     modal: false,
     channelName: "",
     channelDetails: "",
-    channelsRef: firebase.database().ref("channels")
+    channelsRef: firebase.database().ref("channels"),
+    activeChannel: ""
   }
 
   closeModal = () => {
@@ -87,6 +88,7 @@ class Channels extends Component {
             onClick={() => this.changeChannel(channel)}
             name={channel.name}
             style={{opacity: 0.7}}
+            active={channel.id === this.state.activeChannel}
           >
             <span><Icon name="angle right"/> {channel.name}</span>
           </Menu.Item>
@@ -98,14 +100,23 @@ class Channels extends Component {
   }
 
   changeChannel = (channel) => {
-    this.props.currentChannel(channel)
+    this.props.currentChannel(channel);
+    this.setActiveChannel(channel);
   }
 
   setFirstChannel = () => {
     if (this.state.channels.length > 0) {
-      this.props.currentChannel(this.state.channels[0])
+      this.props.currentChannel(this.state.channels[0]);
+      this.setActiveChannel(this.state.channels[0]);
     }
   }
+
+  setActiveChannel = (channel) => {
+    this.setState({
+      activeChannel: channel.id
+    })
+  }
+
 
   render() {
     console.log(this.state.channels)
