@@ -99,7 +99,7 @@ class Channels extends Component {
         )
       })
     } else {
-      return <p style={{fontSize: "1rem", color: "#fff"}}>Getting channels...</p>
+      return <p style={{fontSize: "1rem", color: "#fff"}}>No channels to display.</p>
     }
   }
 
