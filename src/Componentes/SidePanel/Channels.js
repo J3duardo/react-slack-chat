@@ -4,6 +4,10 @@ import firebase from "../../firebase";
 import {connect} from "react-redux";
 
 class Channels extends Component {
+  componentDidMount() {
+    this.addListeners()
+  }
+
   state = {
     channels: [],
     modal: false,
@@ -61,6 +65,36 @@ class Channels extends Component {
       })
   }
 
+  addListeners = () => {
+    let loadedChannels = [];
+    this.state.channelsRef.on("child_added", (snap) => {
+      loadedChannels.push(snap.val());
+      this.setState({
+        channels: loadedChannels
+      })
+    });
+
+  }
+
+  renderChannels = (channels) => {
+    if (channels.length > 0) {
+      return channels.map((channel) => {
+        return (
+          <Menu.Item
+            key={channel.id}
+            onClick={() => {console.log(channel)}}
+            name={channel.name}
+            style={{opacity: 0.7}}
+          >
+            <span><Icon name="angle right"/> {channel.name}</span>
+          </Menu.Item>
+        )
+      })
+    } else {
+      return <p style={{fontSize: "1rem", color: "#fff"}}>Getting channels...</p>
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -71,6 +105,7 @@ class Channels extends Component {
             </span>{" "}
             ({this.state.channels.length}) <Icon name="add" onClick={this.openModal}/>
           </Menu.Item>
+          {this.renderChannels(this.state.channels)}
         </Menu.Menu>
 
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
