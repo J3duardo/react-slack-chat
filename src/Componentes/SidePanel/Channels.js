@@ -6,7 +6,7 @@ import {setCurrentChannel} from "../../actions";
 
 class Channels extends Component {
   componentDidMount() {
-    this.addListeners()
+    this.addListeners();
   }
 
   state = {
@@ -72,7 +72,8 @@ class Channels extends Component {
       loadedChannels.push(snap.val());
       this.setState({
         channels: loadedChannels
-      })
+      });
+      this.setFirstChannel();
     });
 
   }
@@ -100,7 +101,14 @@ class Channels extends Component {
     this.props.currentChannel(channel)
   }
 
+  setFirstChannel = () => {
+    if (this.state.channels.length > 0) {
+      this.props.currentChannel(this.state.channels[0])
+    }
+  }
+
   render() {
+    console.log(this.state.channels)
     return (
       <React.Fragment>
         <Menu.Menu style={{paddingBottom: "2rem"}}>
