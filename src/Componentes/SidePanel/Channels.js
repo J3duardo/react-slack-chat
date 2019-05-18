@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Menu, Icon, Modal, Form, Input} from "semantic-ui-react";
+import {Menu, Icon, Modal, Form, Input, Button} from "semantic-ui-react";
 
 class Channels extends Component {
   state = {
@@ -51,6 +51,14 @@ class Channels extends Component {
               </Form.Field>
             </Form>
           </Modal.Content>
+          <Modal.Actions>
+            <Button color="green" inverted>
+              <Icon name="checkmark"/> Add
+            </Button>
+            <Button color="red" inverted>
+              <Icon name="remove"/> Cancel
+            </Button>
+          </Modal.Actions>
         </Modal>
       </React.Fragment>
     );
