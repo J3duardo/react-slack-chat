@@ -3,6 +3,7 @@ import {Segment, Comment} from "semantic-ui-react";
 import MessagesHeader from "./MessagesHeader";
 import MessagesForm from "./MessagesForm";
 import firebase from "../../firebase";
+import Message from "./Message";
 
 class Messages extends Component {
   constructor(props) {
@@ -54,13 +55,21 @@ class Messages extends Component {
     })
   }
 
+  renderMessages = (messages) => {
+    if(messages.length > 0) {
+     return messages.map((message, i) => {
+        return <Message message={message} key={i}/>
+      })
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
         <MessagesHeader />
         <Segment>
           <Comment.Group className="messages">
-            Messages
+            {this.renderMessages(this.state.messages)}
           </Comment.Group>
         </Segment>
         <MessagesForm/>
