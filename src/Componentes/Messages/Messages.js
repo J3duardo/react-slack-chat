@@ -5,22 +5,37 @@ import MessagesForm from "./MessagesForm";
 import firebase from "../../firebase";
 
 class Messages extends Component {
-  state = {
-    channel: null,
-    user: null,
-    messagesRef: firebase.database().ref("messages")
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      channel: null,
+      user: null,
+      messagesRef: firebase.database().ref("messages"),
+      messages: [],
+      loadingMessages: true
+    };
+
+    this.currentChannel = null;
+    this.currentUser = null;
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
-      this.setState({
-        channel: this.props.channel,
-        user: this.props.user
-      })
-    }
+      this.currentChannel = this.props.channel;
+      this.currentUser = this.props.user;
+      this.updateState(this.currentChannel, this.currentUser)
+    }    
+  }
 
-    if(this.state.channel && this.state.user) {
-      this.addListeners(this.state.channel.id)
+  updateState = (channel, user) => {
+    this.setState ({
+      channel: channel,
+      user: user
+    })
+
+    if(channel && user) {
+      this.addListeners(channel.id)
     }
   }
 
@@ -32,7 +47,10 @@ class Messages extends Component {
     const loadedMessages = [];
     this.state.messagesRef.child(id).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
-      console.log(loadedMessages)
+      this.setState({
+        messages: loadedMessages,
+        loadingMessages: false
+      })
     })
   }
 
