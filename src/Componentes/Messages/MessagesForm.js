@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import {Segment, Button, Input} from "semantic-ui-react";
 
 class MessagesForm extends Component {
+  state = {
+    message: ""
+  }
+
+  onChangeHandler = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   render() {
     return (
       <Segment className="message__form">
@@ -12,6 +22,7 @@ class MessagesForm extends Component {
           label={<Button icon="add"/>}
           labelPosition="left"
           placeholder="Write your message"
+          onChange={this.onChangeHandler}
         />
         <Button.Group icon widths="2">
           <Button
