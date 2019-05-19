@@ -3,7 +3,7 @@ import {Comment} from "semantic-ui-react";
 import moment from "moment";
 
 const isOwnMessage = (message, user) => {
-  return message.user === user.id ? "message__self" : ""
+  return message.user.id === user.uid ? "message__self" : ""
 }
 
 const timeNow = (timeStamp) => {
@@ -11,6 +11,7 @@ const timeNow = (timeStamp) => {
 } 
 
 const Message = (props) => {
+  console.log(props)
   return (
     <Comment>
       <Comment.Avatar src={props.message.user.avatar}/>
