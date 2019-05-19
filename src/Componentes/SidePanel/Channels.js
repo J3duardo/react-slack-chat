@@ -123,7 +123,6 @@ class Channels extends Component {
 
 
   render() {
-    console.log(this.state.channels)
     return (
       <React.Fragment>
         <Menu.Menu style={{paddingBottom: "2rem"}}>
