@@ -7,7 +7,8 @@ class MessagesForm extends Component {
   state = {
     message: "",
     loading: false,
-    errors: []
+    errors: [],
+    messagesRef: firebase.database().ref("messages")
   }
 
   onChangeHandler = (event) => {
@@ -19,7 +20,7 @@ class MessagesForm extends Component {
   sendMessage = () => {
     if (this.state.message) {
       this.setState({loading: true});
-      this.props.messagesRef
+      this.state.messagesRef
         .child(this.props.channelId)
         .push()
         .set({
@@ -87,7 +88,7 @@ class MessagesForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    channelId: state.currentChannel ? state.currentChannel.id : "Loading...",
+    channelId: state.currentChannel.currentChannel ? state.currentChannel.currentChannel.id : "Loading...",
     currentUser: state.user.currentUser ? state.user.currentUser : "Loading..."
   }
 }
