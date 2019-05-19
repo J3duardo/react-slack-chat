@@ -58,7 +58,7 @@ class Messages extends Component {
   renderMessages = (messages) => {
     if(messages.length > 0) {
      return messages.map((message, i) => {
-        return <Message message={message} key={i}/>
+        return <Message message={message} key={i} user={this.state.user}/>
       })
     }
   }
