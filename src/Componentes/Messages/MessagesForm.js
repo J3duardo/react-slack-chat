@@ -65,6 +65,7 @@ class MessagesForm extends Component {
           placeholder="Write your message"
           onChange={this.onChangeHandler}
           value={this.state.message}
+          disabled={this.state.loading}
           className={this.state.errors.some(err => { return err.message.includes("message")}) ? "error" : ""}
         />
         <Button.Group icon widths="2">
