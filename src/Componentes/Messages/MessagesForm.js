@@ -18,7 +18,7 @@ class MessagesForm extends Component {
   }
 
   closeModal = () => {
-    this.state({
+    this.setState({
       modal: false
     })
   }
