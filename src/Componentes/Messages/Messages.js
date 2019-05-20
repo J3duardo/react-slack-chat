@@ -60,6 +60,8 @@ class Messages extends Component {
      return messages.map((message, i) => {
         return <Message message={message} key={i} user={this.state.user}/>
       })
+    }else {
+      return <p>No messages to display.</p>
     }
   }
 
