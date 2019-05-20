@@ -11,7 +11,6 @@ const timeNow = (timeStamp) => {
 } 
 
 const Message = (props) => {
-  console.log(props)
   return (
     <Comment>
       <Comment.Avatar src={props.message.user.avatar}/>
