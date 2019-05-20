@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import {Modal, Input, Button, Icon} from "semantic-ui-react";
 
 class FileModal extends Component {
+  state = {
+    file: null
+  }
+
+  addFile = (event) => {
+    const file = event.target.files[0];
+    if(file) {
+      this.setState({
+        file: file
+      })
+    }
+  }
+
   render() {
     return (
       <Modal basic open={this.props.modal} onClose={this.props.closeModal}>
@@ -11,6 +24,7 @@ class FileModal extends Component {
             fluid
             label="File types: .jpg, .png"
             type="file"
+            onChange={this.addFile}
           />
         </Modal.Content>
         <Modal.Actions>
