@@ -23,12 +23,19 @@ class FileModal extends Component {
         const metadata = {contentType: this.state.file.type}
         this.props.uploadFile(this.state.file, metadata);
         this.props.closeModal();
+        this.clearFile();
       }
     }
   }
 
   isAuthorized = (fileType) => {
     return this.state.authorized.includes(fileType)
+  }
+
+  clearFile = () => {
+    this.setState({
+      file: null
+    })
   }
 
   render() {
