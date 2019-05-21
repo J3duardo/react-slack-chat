@@ -134,7 +134,6 @@ class MessagesForm extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <Segment className="message__form">
         <Input 
