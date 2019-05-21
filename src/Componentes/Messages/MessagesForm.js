@@ -134,6 +134,7 @@ class MessagesForm extends Component {
   }
 
   render() {
+    console.log(this.state.percentUploaded)
     return (
       <Segment className="message__form">
         <Input 
