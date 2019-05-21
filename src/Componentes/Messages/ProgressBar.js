@@ -2,7 +2,7 @@ import React from 'react';
 import {Progress} from "semantic-ui-react";
 
 const ProgressBar = ({uploadState, percentUploaded}) => {
-  if(uploadState !== "") {
+  if(uploadState === "uploading") {
     return (
       <Progress
         className="progress__bar"
@@ -13,7 +13,9 @@ const ProgressBar = ({uploadState, percentUploaded}) => {
         inverted
       />
     )
-  } else return null;
+  } else {
+    return null;
+  }
 }
 
 export default ProgressBar;
