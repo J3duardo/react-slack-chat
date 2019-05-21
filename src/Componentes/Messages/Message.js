@@ -15,7 +15,6 @@ const isImage = (message) => {
 }
 
 const Message = (props) => {
-  console.log(props.message)
   return (
     <Comment>
       <Comment.Avatar src={props.message.user.avatar}/>
