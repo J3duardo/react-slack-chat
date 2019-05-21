@@ -11,19 +11,20 @@ const timeNow = (timeStamp) => {
 }
 
 const isImage = (message) => {
-  return message.hasOwnProperty("image") && message.hasOwnProperty("content")
+  return message.hasOwnProperty("image")
 }
 
 const Message = (props) => {
+  console.log(props.message)
   return (
     <Comment>
       <Comment.Avatar src={props.message.user.avatar}/>
       <Comment.Content className={isOwnMessage(props.message, props.user)}>
         <Comment.Author as="a">{props.message.user.name}</Comment.Author>
         <Comment.Metadata>{timeNow(props.message.timestamp)}</Comment.Metadata>
+        <Comment.Text>{props.message.content}</Comment.Text>
         {isImage(props.message) ? 
-          <Image src={props.message.image} className="message__image"/> :
-          <Comment.Text>{props.message.content}</Comment.Text>
+          <Image src={props.message.image} className="message__image"/> : null
         }
       </Comment.Content>
     </Comment>
