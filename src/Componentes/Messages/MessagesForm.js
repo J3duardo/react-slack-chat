@@ -34,21 +34,30 @@ class MessagesForm extends Component {
     })
   }
 
+  createMessage = (fileUrl = null) => {
+    const message = {
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+      user: {
+        id: this.props.currentUser.uid,
+        name: this.props.currentUser.displayName,
+        avatar: this.props.currentUser.photoURL
+      }
+    };
+    if (fileUrl !== null) {
+      message["image"] = fileUrl;
+    } else {
+      message["content"] = this.state.message;
+    }
+    return message
+  }
+
   sendMessage = () => {
     if (this.state.message) {
       this.setState({loading: true});
       this.state.messagesRef
         .child(this.props.channelId)
         .push()
-        .set({
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          content: this.state.message,
-          user: {
-            id: this.props.currentUser.uid,
-            name: this.props.currentUser.displayName,
-            avatar: this.props.currentUser.photoURL
-          }
-        })
+        .set(this.createMessage())
         .then(() => {
           this.setState({
             loading: false,
@@ -111,7 +120,16 @@ class MessagesForm extends Component {
   };
 
   sendFileMessage = (downloadUrl, ref, pathToUpload) => {
-    
+    ref.child(pathToUpload)
+    .push()
+    .set(this.createMessage(downloadUrl))
+    .then(() => {
+      this.setState({uploadState: "done"})
+    })
+    .catch((err) => {
+      console.log(err);
+      this.setState({errors: [...this.state.errors, err]})
+    })
   }
 
   render() {
