@@ -89,33 +89,34 @@ class MessagesForm extends Component {
       uploadState: "uploading",
       uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
     },
-      this.state.uploadTask.on("state_changed", (snap) => {
-        const percentUploaded = Math.round((snap.bytesTransferred/snap.totalBytes) * 100);
-        this.setState({percentUploaded: percentUploaded});
-      },
-        (err) => {
-          console.error(err);
-          this.setState({
-            errors: [...this.state.errors, err],
-            uploadState: "error",
-            uploadTask: null
-          })
+      () => {
+        this.state.uploadTask.on("state_changed", (snap) =>{
+          const percentUploaded = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
+          this.setState({percentUploaded: percentUploaded});
         },
-        () => {
-          this.state.uploadTask.snapshot.ref.getDownloadURL()
-          .then(downloadUrl => {
-            this.sendFileMessage(downloadUrl, ref, pathToUpload)
-          })
-          .catch(err => {
-            console.error(err);
+          (err) => {
+            console.log(err);
             this.setState({
               errors: [...this.state.errors, err],
               uploadState: "error",
               uploadTask: null
             })
-          })
-        }
-      )
+          },
+          () => {
+            this.state.uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) => {
+              this.sendFileMessage(downloadUrl, ref, pathToUpload);
+            })
+            .catch((err) => {
+              console.log(err);
+              this.setState({
+                errors: [...this.state.errors, err],
+                uploadState: "error",
+                uploadTask: null
+              })
+            })
+          }
+        )
+      }
     )
   };
 
@@ -133,6 +134,7 @@ class MessagesForm extends Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <Segment className="message__form">
         <Input 
