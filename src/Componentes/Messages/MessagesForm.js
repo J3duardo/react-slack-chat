@@ -3,6 +3,7 @@ import {Segment, Button, Input} from "semantic-ui-react";
 import {connect} from "react-redux";
 import firebase from "../../firebase";
 import FileModal from "./FileModal";
+import uuidv4 from "uuid/v4";
 
 class MessagesForm extends Component {
   state = {
@@ -10,6 +11,10 @@ class MessagesForm extends Component {
     loading: false,
     errors: [],
     modal: false,
+    uploadTask: null,
+    uploadState: "",
+    percentUploaded: 0,
+    storageRef: firebase.storage().ref(),
     messagesRef: firebase.database().ref("messages")
   }
 
@@ -66,7 +71,47 @@ class MessagesForm extends Component {
   }
 
   uploadFile = (file, metadata) => {
-    console.log(file, metadata)
+    const ref = this.state.messagesRef;
+    const pathToUpload = this.props.channelId;
+    const fileType = metadata.contentType === "image/jpeg" ? ".jpg" : ".png";
+    const filePath = `chat/public/${uuidv4()}${fileType}`;
+
+    this.setState({
+      uploadState: "uploading",
+      uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
+    },
+      this.state.uploadTask.on("state_changed", (snap) => {
+        const percentUploaded = Math.round((snap.bytesTransferred/snap.totalBytes) * 100);
+        this.setState({percentUploaded: percentUploaded});
+      },
+        (err) => {
+          console.error(err);
+          this.setState({
+            errors: [...this.state.errors, err],
+            uploadState: "error",
+            uploadTask: null
+          })
+        },
+        () => {
+          this.state.uploadTask.snapshot.ref.getDownloadURL()
+          .then(downloadUrl => {
+            this.sendFileMessage(downloadUrl, ref, pathToUpload)
+          })
+          .catch(err => {
+            console.error(err);
+            this.setState({
+              errors: [...this.state.errors, err],
+              uploadState: "error",
+              uploadTask: null
+            })
+          })
+        }
+      )
+    )
+  };
+
+  sendFileMessage = (downloadUrl, ref, pathToUpload) => {
+    
   }
 
   render() {
