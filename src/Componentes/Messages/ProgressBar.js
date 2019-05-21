@@ -13,7 +13,7 @@ const ProgressBar = ({uploadState, percentUploaded}) => {
         inverted
       />
     )
-  }
+  } else return null;
 }
 
 export default ProgressBar;
