@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import firebase from "../../firebase";
 import FileModal from "./FileModal";
 import uuidv4 from "uuid/v4";
+import ProgressBar from "./ProgressBar";
+
 
 class MessagesForm extends Component {
   state = {
@@ -163,12 +165,16 @@ class MessagesForm extends Component {
             icon="cloud upload"
             onClick={this.openModal}
           />
-          <FileModal
-            modal={this.state.modal}
-            closeModal={this.closeModal}
-            uploadFile={this.uploadFile}
-          />
         </Button.Group>
+        <FileModal
+          modal={this.state.modal}
+          closeModal={this.closeModal}
+          uploadFile={this.uploadFile}
+        />
+        <ProgressBar
+          uploadState={this.state.uploadState}
+          percentUploaded={this.state.percentUploaded}
+        />
       </Segment>
     );
   }
