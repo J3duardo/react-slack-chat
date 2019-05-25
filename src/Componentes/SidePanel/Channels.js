@@ -54,7 +54,8 @@ class Channels extends Component {
       details: this.state.channelDetails,
       createdBy: {
         name: this.props.userName,
-        avatar: this.props.userAvatar
+        avatar: this.props.userAvatar,
+        userId: this.props.userId
       }
     }
     
@@ -175,7 +176,8 @@ class Channels extends Component {
 const mapStateToProps = (state) => {
   return {
     userName: state.user.currentUser ? state.user.currentUser.displayName : "",
-    userAvatar: state.user.currentUser ? state.user.currentUser.photoURL : ""
+    userAvatar: state.user.currentUser ? state.user.currentUser.photoURL : "",
+    userId: state.user.currentUser ? state.user.currentUser.uid : ""
   }
 }
 
