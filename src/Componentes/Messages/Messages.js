@@ -4,6 +4,7 @@ import MessagesHeader from "./MessagesHeader";
 import MessagesForm from "./MessagesForm";
 import firebase from "../../firebase";
 import Message from "./Message";
+import { runInThisContext } from 'vm';
 
 class Messages extends Component {
   constructor(props) {
@@ -15,7 +16,10 @@ class Messages extends Component {
       messagesRef: firebase.database().ref("messages"),
       messages: [],
       loadingMessages: true,
-      uniqueUsers: []
+      uniqueUsers: [],
+      searchTerm: "",
+      searchLoading: false,
+      searchResults: []
     };
 
     this.currentChannel = null;
@@ -83,12 +87,33 @@ class Messages extends Component {
     })
   }
 
+  searchHandler = (event) => {
+    this.setState({
+      searchTerm: event.target.value,
+      searchLoading: true
+    }, () => this.searchMessagesHandler())
+  }
+
+  searchMessagesHandler = () => {
+    const channelMessages = [...this.state.messages];
+    const results = channelMessages.filter(message => {
+      if(message.content) {
+        return message.content.includes(this.state.searchTerm);
+      }
+    });
+    this.setState({
+      searchResults: results
+    })
+  }
+
   render() {
+    console.log(this.state.searchTerm, this.state.searchResults);
     return (
       <React.Fragment>
         <MessagesHeader
           channelName={this.displayChannelName(this.state.channel)}
           uniqueUsers={this.state.uniqueUsers}
+          searchHandler={this.searchHandler}
         />
         <Segment>
           <Comment.Group className="messages">

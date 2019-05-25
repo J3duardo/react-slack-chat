@@ -12,6 +12,10 @@ class MessagesHeader extends Component {
     }
   }
 
+  onChangeHandler = (event) => {
+    this.props.searchHandler(event)
+  }
+
   render() {
     return (
       <Segment clearing>
@@ -28,6 +32,7 @@ class MessagesHeader extends Component {
         {/* Channel search input */}
         <Header floated="right">
           <Input
+            onChange={this.onChangeHandler}
             size="mini"
             icon="search"
             name="searchTerm"
