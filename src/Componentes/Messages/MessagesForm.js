@@ -160,6 +160,7 @@ class MessagesForm extends Component {
           />
           <Button
             color="teal"
+            disabled={this.state.uploadState === "uploading"}
             content="Upload media"
             labelPosition="right"
             icon="cloud upload"
