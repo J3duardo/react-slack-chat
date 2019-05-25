@@ -65,10 +65,14 @@ class Messages extends Component {
     }
   }
 
+  displayChannelName = (channel) => {
+    return channel ? channel.name : "You have no channels created"
+  }
+
   render() {
     return (
       <React.Fragment>
-        <MessagesHeader />
+        <MessagesHeader channelName={this.displayChannelName(this.state.channel)}/>
         <Segment>
           <Comment.Group className="messages">
             {this.renderMessages(this.state.messages)}
