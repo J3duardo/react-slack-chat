@@ -14,7 +14,8 @@ class Messages extends Component {
       user: null,
       messagesRef: firebase.database().ref("messages"),
       messages: [],
-      loadingMessages: true
+      loadingMessages: true,
+      uniqueUsers: []
     };
 
     this.currentChannel = null;
@@ -51,7 +52,8 @@ class Messages extends Component {
       this.setState({
         messages: loadedMessages,
         loadingMessages: false
-      })
+      });
+      this.usersCounter(loadedMessages)
     })
   }
 
@@ -69,10 +71,25 @@ class Messages extends Component {
     return channel ? channel.name : "You have no channels created"
   }
 
+  usersCounter = (messages) => {
+    const users = [];
+    messages.forEach((message) => {
+      if(!users.includes(message.user.name)) {
+        users.push(message.user.name)
+      }
+    });
+    this.setState({
+      uniqueUsers: users
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
-        <MessagesHeader channelName={this.displayChannelName(this.state.channel)}/>
+        <MessagesHeader
+          channelName={this.displayChannelName(this.state.channel)}
+          uniqueUsers={this.state.uniqueUsers}
+        />
         <Segment>
           <Comment.Group className="messages">
             {this.renderMessages(this.state.messages)}

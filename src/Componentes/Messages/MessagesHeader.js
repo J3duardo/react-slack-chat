@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import {Header, Segment, Input, Icon} from "semantic-ui-react";
 
 class MessagesHeader extends Component {
+  displayUsers = (users) => {
+    if(users.length > 1) {
+      return `${users.length} users`
+    } else if(users.length === 1) {
+      return "1 user"
+    } else {
+      return "Loading users..."
+    }
+  }
+
   render() {
     return (
       <Segment clearing>
@@ -10,7 +20,9 @@ class MessagesHeader extends Component {
             {this.props.channelName}
             <Icon name="star outline" color="black"/>
           </span>
-          <Header.Subheader>2 users</Header.Subheader>
+          <Header.Subheader>
+            {this.displayUsers(this.props.uniqueUsers)}          
+          </Header.Subheader>
         </Header>
 
         {/* Channel search input */}
