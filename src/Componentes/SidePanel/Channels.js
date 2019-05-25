@@ -67,6 +67,7 @@ class Channels extends Component {
           channelName: ""
         });
         this.closeModal();
+        this.setFirstChannel();
         console.log("Canal agregado con éxito!")
       })
   }
