@@ -98,7 +98,7 @@ class Messages extends Component {
     const channelMessages = [...this.state.messages];
     const results = channelMessages.filter(message => {
       if(message.content) {
-        return message.content.includes(this.state.searchTerm);
+        return message.content.includes(this.state.searchTerm) || message.user.name.includes(this.state.searchTerm);
       }
     });
     this.setState({
@@ -107,7 +107,6 @@ class Messages extends Component {
   }
 
   render() {
-    console.log(this.state.searchTerm, this.state.searchResults);
     return (
       <React.Fragment>
         <MessagesHeader
@@ -117,7 +116,9 @@ class Messages extends Component {
         />
         <Segment>
           <Comment.Group className="messages">
-            {this.renderMessages(this.state.messages)}
+            {this.state.searchTerm ?
+            this.renderMessages(this.state.searchResults) :
+            this.renderMessages(this.state.messages)}
           </Comment.Group>
         </Segment>
         <MessagesForm/>
