@@ -12,7 +12,7 @@ const App = (props) => {
   return (
     <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee"}}>
       <ColorPanel />
-      <SidePanel />
+      <SidePanel user={props.user}/>
       <Grid.Column style={{marginLeft: 320}}>
         <Messages
           user={props.user}
