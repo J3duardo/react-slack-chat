@@ -16,7 +16,7 @@ class SidePanel extends Component {
       >
         <UserPanel />
         <Channels />
-        <DirectMessages />
+        <DirectMessages user={this.props.user}/>
       </Menu>
     );
   }
