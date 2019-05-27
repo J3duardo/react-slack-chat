@@ -11,13 +11,6 @@ class DirectMessages extends Component {
     presenceRef: firebase.database().ref("presence")
   }
 
-  // componentDidMount() {
-  //   console.log(this.state.user)
-  //   if(this.state.user) {
-  //     this.addListeners(this.state.user.uid)
-  //   }
-  // }
-
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
       this.setState({user: this.props.user}, () => {
@@ -80,7 +73,6 @@ class DirectMessages extends Component {
   }
 
   render() {
-    console.log(this.state.users)
     return (
       <Menu.Menu className="menu">
         <Menu.Item>

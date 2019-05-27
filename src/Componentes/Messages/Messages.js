@@ -4,7 +4,6 @@ import MessagesHeader from "./MessagesHeader";
 import MessagesForm from "./MessagesForm";
 import firebase from "../../firebase";
 import Message from "./Message";
-import { runInThisContext } from 'vm';
 
 class Messages extends Component {
   constructor(props) {
