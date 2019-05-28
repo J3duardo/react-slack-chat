@@ -17,7 +17,7 @@ const App = (props) => {
         <Messages
           user={props.user}
           channel={props.channel}
-          isPrivateChannel={this.props.isPrivateChannel}
+          isPrivateChannel={props.isPrivateChannel}
         />
       </Grid.Column>
       <Grid.Column>
