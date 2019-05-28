@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Menu, Icon} from "semantic-ui-react";
 import firebase from "../../firebase";
 import {connect} from "react-redux";
-import {setCurrentChannel} from "../../actions";
+import {setCurrentChannel, setPrivateChannel} from "../../actions";
 
 class DirectMessages extends Component {
   state = {
@@ -81,6 +81,7 @@ class DirectMessages extends Component {
       name: user.name
     };
     this.props.setChannelData(channelData);
+    this.props.setPrivateChannel(true);
   }
 
   getChannelId = (userId) => {
@@ -123,6 +124,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setChannelData: (data) => {
       dispatch(setCurrentChannel(data))
+    },
+    setPrivateChannel: (bool) => {
+      dispatch(setPrivateChannel(bool))
     }
   }
 }
