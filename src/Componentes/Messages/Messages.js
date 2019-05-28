@@ -18,25 +18,29 @@ class Messages extends Component {
       uniqueUsers: [],
       searchTerm: "",
       searchLoading: false,
-      searchResults: []
+      searchResults: [],
+      privateChannel: false
     };
 
     this.currentChannel = null;
     this.currentUser = null;
+    this.isPrivate = false;
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
       this.currentChannel = this.props.channel;
       this.currentUser = this.props.user;
-      this.updateState(this.currentChannel, this.currentUser)
+      this.isPrivate = this.props.isPrivateChannel;
+      this.updateState(this.currentChannel, this.currentUser, this.isPrivate)
     }    
   }
 
-  updateState = (channel, user) => {
+  updateState = (channel, user, isPrivate) => {
     this.setState ({
       channel: channel,
-      user: user
+      user: user,
+      privateChannel: isPrivate
     })
 
     if(channel && user) {
@@ -105,6 +109,10 @@ class Messages extends Component {
     })
   }
 
+  displayChannelName = (channel) => {
+    return channel ? `${this.state.privateChannel ? "@" : "#"}${channel.name}` : "";
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -112,6 +120,7 @@ class Messages extends Component {
           channelName={this.displayChannelName(this.state.channel)}
           uniqueUsers={this.state.uniqueUsers}
           searchHandler={this.searchHandler}
+          isPrivateChannel={this.state.privateChannel}
         />
         <Segment>
           <Comment.Group className="messages">
