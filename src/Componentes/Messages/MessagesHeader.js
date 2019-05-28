@@ -8,7 +8,7 @@ class MessagesHeader extends Component {
     } else if(users.length === 1) {
       return "1 user"
     } else {
-      return "Loading users..."
+      return "No users in this channel."
     }
   }
 
