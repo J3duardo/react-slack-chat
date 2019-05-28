@@ -19,7 +19,8 @@ class Messages extends Component {
       searchTerm: "",
       searchLoading: false,
       searchResults: [],
-      privateChannel: false
+      privateChannel: false,
+      privateMessagesRef: firebase.database().ref("privateMessages")
     };
 
     this.currentChannel = null;
@@ -54,7 +55,8 @@ class Messages extends Component {
 
   addMessageListener = (id) => {
     const loadedMessages = [];
-    this.state.messagesRef.child(id).on("child_added", (snap) => {
+    const ref = this.getMessagesRef();
+    ref.child(id).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
       this.setState({
         messages: loadedMessages,
@@ -113,6 +115,10 @@ class Messages extends Component {
     return channel ? `${this.state.privateChannel ? "@" : "#"}${channel.name}` : "";
   }
 
+  getMessagesRef = () => {
+    return this.state.privateChannel ? this.state.privateMessagesRef : this.state.messagesRef;
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -129,7 +135,10 @@ class Messages extends Component {
             this.renderMessages(this.state.messages)}
           </Comment.Group>
         </Segment>
-        <MessagesForm/>
+        <MessagesForm
+          isPrivateChannel={this.state.privateChannel}
+          getMessagesRef={this.getMessagesRef}
+        />
       </React.Fragment>
     );
   }
