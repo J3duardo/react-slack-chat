@@ -20,7 +20,8 @@ class Messages extends Component {
       searchLoading: false,
       searchResults: [],
       privateChannel: false,
-      privateMessagesRef: firebase.database().ref("privateMessages")
+      privateMessagesRef: firebase.database().ref("privateMessages"),
+      isChannelStarred: false
     };
 
     this.currentChannel = null;
@@ -119,6 +120,17 @@ class Messages extends Component {
     return this.state.privateChannel ? this.state.privateMessagesRef : this.state.messagesRef;
   }
 
+  starredHandler = () => {
+    const starred = !this.state.isChannelStarred;
+    this.setState({
+      isChannelStarred: starred
+    }, () => this.starChannel())
+  }
+
+  starChannel = () => {
+    this.state.isChannelStarred ? console.log("star") : console.log("ustar")
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -127,6 +139,8 @@ class Messages extends Component {
           uniqueUsers={this.state.uniqueUsers}
           searchHandler={this.searchHandler}
           isPrivateChannel={this.state.privateChannel}
+          starredHandler={this.starredHandler}
+          isChannelStarred={this.state.isChannelStarred}
         />
         <Segment>
           <Comment.Group className="messages">
