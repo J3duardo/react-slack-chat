@@ -21,7 +21,8 @@ class Messages extends Component {
       searchResults: [],
       privateChannel: false,
       privateMessagesRef: firebase.database().ref("privateMessages"),
-      isChannelStarred: false
+      isChannelStarred: false,
+      usersRef: firebase.database().ref("users")
     };
 
     this.currentChannel = null;
@@ -128,7 +129,29 @@ class Messages extends Component {
   }
 
   starChannel = () => {
-    this.state.isChannelStarred ? console.log("star") : console.log("ustar")
+    if(this.state.isChannelStarred){
+      this.state.usersRef
+      .child(`${this.state.user.uid}/starred`)
+      .update({
+        [this.state.channel.id]: {
+          name: this.state.channel.name,
+          details: this.state.channel.details,
+          createdBy: {
+            name: this.state.channel.createdBy.name,
+            avatar: this.state.channel.createdBy.avatar
+          }
+        }
+      })
+    } else {
+      this.state.usersRef
+      .child(`${this.state.user.uid}/starred`)
+      .child(this.state.channel.id)
+      .remove(err => {
+        if(err !== null) {
+          console.error(err)
+        }
+      })
+    }
   }
 
   render() {
