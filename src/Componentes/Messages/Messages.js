@@ -30,12 +30,19 @@ class Messages extends Component {
     this.isPrivate = false;
   }
 
+  // componentDidMount() {
+  //   console.log(this.state.channel, this.state.user)
+  //   if (this.state.channel && this.state.user) {
+  //     this.addUserStarListener(this.state.channel, this.state.user)
+  //   }
+  // }
+
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
       this.currentChannel = this.props.channel;
       this.currentUser = this.props.user;
       this.isPrivate = this.props.isPrivateChannel;
-      this.updateState(this.currentChannel, this.currentUser, this.isPrivate)
+      this.updateState(this.currentChannel, this.currentUser, this.isPrivate);
     }    
   }
 
@@ -47,7 +54,8 @@ class Messages extends Component {
     })
 
     if(channel && user) {
-      this.addListeners(channel.id)
+      this.addListeners(channel.id);
+      this.addUserStarListener(channel.id, user.uid)
     }
   }
 
@@ -152,6 +160,22 @@ class Messages extends Component {
         }
       })
     }
+  }
+
+  addUserStarListener = (channelId, userId) => {
+    this.state.usersRef
+    .child(userId)
+    .child("starred")
+    .once("value")
+    .then(data => {
+      if(data.val() !== null) {
+        const channelIds = Object.keys(data.val());
+        const prevStarred = channelIds.includes(channelId);
+        this.setState({
+          isChannelStarred: prevStarred
+        })
+      }
+    })
   }
 
   render() {
