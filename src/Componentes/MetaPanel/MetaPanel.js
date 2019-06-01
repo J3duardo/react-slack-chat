@@ -31,7 +31,7 @@ class MetaPanel extends Component {
     return (
       <Segment>
         <Header as="h3" attached="top">
-          {this.state.currentChannel ? `About #${this.state.currentChannel.name}` : "Loading channel name..."}
+          {this.state.currentChannel ? `About #${this.state.currentChannel.name}` : "No channel to display..."}
         </Header>
         <Accordion styled attached="true">
           <Accordion.Title
@@ -44,7 +44,7 @@ class MetaPanel extends Component {
             Channel details
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 0}>
-            {this.state.currentChannel ? this.state.currentChannel.details : "Loading channel details..."}      
+            {this.state.currentChannel ? this.state.currentChannel.details : "No channel to display..."}      
           </Accordion.Content>
 
           <Accordion.Title
@@ -71,8 +71,8 @@ class MetaPanel extends Component {
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 2}>
             <Header>
-              {this.state.currentChannel ? <Image circular src={this.state.currentChannel.createdBy.avatar}/> : <p>Loading avatar...</p>}
-              {this.state.currentChannel ? this.state.currentChannel.createdBy.name : <p>Loading name...</p>}
+              {this.state.currentChannel ? <Image circular src={this.state.currentChannel.createdBy.avatar}/> : <p>No channel to display...</p>}
+              {this.state.currentChannel ? this.state.currentChannel.createdBy.name : <p>No channel to display...</p>}
             </Header>
           </Accordion.Content>
         </Accordion>
