@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import {Segment, Accordion, Header, Icon} from "semantic-ui-react";
+import {Segment, Accordion, Header, Icon, Image} from "semantic-ui-react";
 
 class MetaPanel extends Component {
   state = {
     activeIndex: 0,
-    isPrivateChannel: this.props.isPrivateChannel
+    isPrivateChannel: this.props.isPrivateChannel,
+    currentChannel: null
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.currentChannel !== prevProps.currentChannel) {
+      this.setState({
+        currentChannel: this.props.currentChannel
+      })
+    }
   }
 
   setActiveIndex = (event, titleProps) =>{
-    console.log(titleProps)
     const newIndex = this.state.activeIndex === titleProps.index ? -1 : titleProps.index;
     this.setState({
       activeIndex: newIndex
@@ -23,7 +31,7 @@ class MetaPanel extends Component {
     return (
       <Segment>
         <Header as="h3" attached="top">
-          About Channel
+          {this.state.currentChannel ? `About #${this.state.currentChannel.name}` : "Loading channel name..."}
         </Header>
         <Accordion styled attached="true">
           <Accordion.Title
@@ -36,7 +44,7 @@ class MetaPanel extends Component {
             Channel details
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 0}>
-            Details
+            {this.state.currentChannel ? this.state.currentChannel.details : "Loading channel details..."}      
           </Accordion.Content>
 
           <Accordion.Title
@@ -62,7 +70,10 @@ class MetaPanel extends Component {
             Created by
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 2}>
-            Creator
+            <Header>
+              {this.state.currentChannel ? <Image circular src={this.state.currentChannel.createdBy.avatar}/> : <p>Loading avatar...</p>}
+              {this.state.currentChannel ? this.state.currentChannel.createdBy.name : <p>Loading name...</p>}
+            </Header>
           </Accordion.Content>
         </Accordion>
       </Segment>
