@@ -48,7 +48,6 @@ class MetaPanel extends Component {
   }
 
   render() {
-
     if(this.props.isPrivateChannel) {
       return null;
     }

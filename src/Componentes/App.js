@@ -9,7 +9,6 @@ import './App.css';
 import {connect} from "react-redux";
 
 const App = (props) => {
-  console.log(props.channel)
   return (
     <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee"}}>
       <ColorPanel />

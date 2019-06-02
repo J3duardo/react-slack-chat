@@ -67,7 +67,6 @@ class Messages extends Component {
         messages: loadedMessages,
         loadingMessages: false
       });
-      console.log(loadedMessages)
       this.usersCounter(loadedMessages);
       this.countUserPost(loadedMessages);
     })
@@ -85,7 +84,6 @@ class Messages extends Component {
         }
       }
     });
-    console.log(counter);
     this.props.setUserPosts(counter);
   }
 
