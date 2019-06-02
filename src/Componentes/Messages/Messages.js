@@ -72,8 +72,26 @@ class Messages extends Component {
         messages: loadedMessages,
         loadingMessages: false
       });
-      this.usersCounter(loadedMessages)
+      console.log(loadedMessages)
+      this.usersCounter(loadedMessages);
+      this.countUserPost(loadedMessages);
     })
+  };
+
+  countUserPost = (messages) => {
+    let counter = {};
+    messages.forEach((message, i) => {
+      if(counter[message.user.name]) {
+        counter[message.user.name].count += 1
+      } else {
+        counter[message.user.name] = {
+          avatar: message.user.avatar,
+          count: 1
+        }
+      }
+    });
+    console.log(counter);
+    return counter;
   }
 
   renderMessages = (messages) => {
