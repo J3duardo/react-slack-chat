@@ -4,6 +4,8 @@ import MessagesHeader from "./MessagesHeader";
 import MessagesForm from "./MessagesForm";
 import firebase from "../../firebase";
 import Message from "./Message";
+import {connect} from "react-redux";
+import {setUserPosts} from "../../actions";
 
 class Messages extends Component {
   constructor(props) {
@@ -29,13 +31,6 @@ class Messages extends Component {
     this.currentUser = null;
     this.isPrivate = false;
   }
-
-  // componentDidMount() {
-  //   console.log(this.state.channel, this.state.user)
-  //   if (this.state.channel && this.state.user) {
-  //     this.addUserStarListener(this.state.channel, this.state.user)
-  //   }
-  // }
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
@@ -91,7 +86,7 @@ class Messages extends Component {
       }
     });
     console.log(counter);
-    return counter;
+    this.props.setUserPosts(counter);
   }
 
   renderMessages = (messages) => {
@@ -223,4 +218,12 @@ class Messages extends Component {
   }
 }
 
-export default Messages;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserPosts: (posts) => {
+      dispatch(setUserPosts(posts))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Messages);
