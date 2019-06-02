@@ -31,4 +31,13 @@ export const setPrivateChannel = (bool) => {
       private: bool
     }
   }
+};
+
+export const setUserPosts = (userPosts) => {
+  return {
+    type: actionTypes.SET_USER_POSTS,
+    payload: {
+      userPosts: userPosts
+    }
+  }
 }
