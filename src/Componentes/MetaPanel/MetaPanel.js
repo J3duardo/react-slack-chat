@@ -5,13 +5,20 @@ class MetaPanel extends Component {
   state = {
     activeIndex: 0,
     isPrivateChannel: this.props.isPrivateChannel,
-    currentChannel: null
+    currentChannel: null,
+    userPosts: {}
   }
 
   componentDidUpdate(prevProps) {
     if(this.props.currentChannel !== prevProps.currentChannel) {
       this.setState({
-        currentChannel: this.props.currentChannel
+        currentChannel: this.props.currentChannel,
+      })
+    }
+
+    if(prevProps.userPosts !== this.props.userPosts) {
+      this.setState({
+        userPosts: this.props.userPosts
       })
     }
   }
@@ -24,6 +31,8 @@ class MetaPanel extends Component {
   };
 
   render() {
+    console.log(this.state.userPosts)
+
     if(this.props.isPrivateChannel) {
       return null;
     }
