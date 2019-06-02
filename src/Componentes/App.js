@@ -25,6 +25,7 @@ const App = (props) => {
         <MetaPanel
           isPrivateChannel={props.isPrivateChannel}
           currentChannel={props.channel}
+          userPosts={props.userPosts}
         />
       </Grid.Column>
     </Grid>
@@ -35,7 +36,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.user.currentUser,
     channel: state.currentChannel.currentChannel,
-    isPrivateChannel: state.currentChannel.isPrivate
+    isPrivateChannel: state.currentChannel.isPrivate,
+    userPosts: state.user.userPosts
   }
 }
 
