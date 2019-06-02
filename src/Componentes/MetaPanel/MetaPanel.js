@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {Segment, Accordion, Header, Icon, Image} from "semantic-ui-react";
+import {Segment, Accordion, Header, Icon, Image, List} from "semantic-ui-react";
 
 class MetaPanel extends Component {
   state = {
     activeIndex: 0,
     isPrivateChannel: this.props.isPrivateChannel,
     currentChannel: null,
-    userPosts: {}
+    userPosts: null
   }
 
   componentDidUpdate(prevProps) {
@@ -30,8 +30,24 @@ class MetaPanel extends Component {
     });
   };
 
+  displayTopPosters = (posts) => {
+    let sorted = Object.entries(posts).sort((a, b) => {
+      return b[1] - a[1]
+    });
+    return sorted.map(([key, val], i) => {
+      return (
+        <List.Item key={i}>
+          <Image avatar src={val.avatar}/>
+          <List.Content>
+            <List.Header as="a">{key}</List.Header>
+            <List.Description>{val.count} posts</List.Description>
+          </List.Content>
+        </List.Item>
+      )
+    })
+  }
+
   render() {
-    console.log(this.state.userPosts)
 
     if(this.props.isPrivateChannel) {
       return null;
@@ -66,7 +82,9 @@ class MetaPanel extends Component {
             Top posters
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 1}>
-            Posters
+            <List>
+              {this.state.userPosts ? this.displayTopPosters(this.state.userPosts) : "No posts to display..."}
+            </List>
           </Accordion.Content>
 
           <Accordion.Title
