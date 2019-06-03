@@ -5,13 +5,17 @@ const initialUserState = {
   currentUser: null,
   isLoading: true,
   userPosts: {},
-  userColors: {}
+  userColors: {
+    primary: "#4c3c4c",
+    secondary: "#eee"
+  }
 }
 
 const userReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER:
       return {
+        ...state,
         currentUser: action.payload.currentUser,
         isLoading: false
       }
