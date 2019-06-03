@@ -30,6 +30,7 @@
   overflow: hidden;
   width: 35px;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 .color__square {

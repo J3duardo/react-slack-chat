@@ -4,7 +4,8 @@ import {combineReducers} from "redux";
 const initialUserState = {
   currentUser: null,
   isLoading: true,
-  userPosts: {}
+  userPosts: {},
+  userColors: {}
 }
 
 const userReducer = (state = initialUserState, action) => {
@@ -23,6 +24,11 @@ const userReducer = (state = initialUserState, action) => {
       return {
         ...state,
         userPosts: action.payload.userPosts
+      }
+    case actionTypes.SET_COLORS:
+      return {
+        ...state,
+        userColors: action.payload.userColors
       }
     default:
       return state;
