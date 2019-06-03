@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Sidebar, Menu, Divider, Button, Modal, Icon, Label, Segment} from "semantic-ui-react";
-import {SliderPicker} from "react-color";
+import {SketchPicker} from "react-color";
 import firebase from "../../firebase";
 import {connect} from "react-redux";
 import {setUserColors} from "../../actions";
@@ -123,13 +123,15 @@ class ColorPanel extends Component {
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
           <Modal.Header>Choose App Colors</Modal.Header>
           <Modal.Content>
-            <Segment>
-              <Label content="Primary Color" />
-              <SliderPicker color={this.state.primary} onChange={this.primaryColorHandler}/>
-            </Segment>
-            <Segment>
-              <Label content="Secondary Color"/>
-              <SliderPicker color={this.state.secondary} onChange={this.secondaryColorHandler}/>
+            <Segment style={{display: "flex", justifyContent: "space-around"}}>
+              <div>
+                <Label content="Choose the Primary Color" />
+                <SketchPicker color={this.state.primary} onChange={this.primaryColorHandler}/>
+              </div>
+              <div>
+                <Label content="Choose the Secondary Color"/>
+                <SketchPicker color={this.state.secondary} onChange={this.secondaryColorHandler}/>
+              </div>
             </Segment>
           </Modal.Content>
           <Modal.Actions>
