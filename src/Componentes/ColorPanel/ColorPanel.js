@@ -81,6 +81,21 @@ class ColorPanel extends Component {
     })
   };
 
+  displayUserColors = (colors) => {
+    return colors.length > 0 && colors.map((color, i) => {
+      return (
+        <React.Fragment key={i}>
+          <Divider />
+          <div className="color__container">
+            <div className="color__square" style={{backgroundColor: color.primary}}>
+              <div className="color__overlay" style={{backgroundColor: color.secondary}}></div>
+            </div>
+          </div>
+        </React.Fragment>
+      )
+    })
+  }
+
   render() {
     console.log(this.state.userColors);
     return (
@@ -99,6 +114,7 @@ class ColorPanel extends Component {
           color="blue"
           onClick={this.openModal}
         />
+        {this.displayUserColors(this.state.userColors)}
 
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
           <Modal.Header>Choose App Colors</Modal.Header>
