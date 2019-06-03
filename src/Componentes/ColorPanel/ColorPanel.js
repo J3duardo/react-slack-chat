@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Sidebar, Menu, Divider, Button, Modal, Icon, Label} from "semantic-ui-react";
+import { Sidebar, Menu, Divider, Button, Modal, Icon, Label, Segment} from "semantic-ui-react";
 import {SliderPicker} from "react-color";
 
 class ColorPanel extends Component {
   state = {
-    modal: false
-  }
+    modal: false,
+    primary: "",
+    secondary: ""
+  };
 
   openModal = () => {
     this.setState({
@@ -16,6 +18,18 @@ class ColorPanel extends Component {
   closeModal = () => {
     this.setState({
       modal: false
+    })
+  };
+
+  primaryColorHandler = (event) => {
+    this.setState({
+      primary: event.hex
+    })
+  };
+  
+  secondaryColorHandler = (event) => {
+    this.setState({
+      secondary: event.hex
     })
   };
 
@@ -40,10 +54,14 @@ class ColorPanel extends Component {
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
           <Modal.Header>Choose App Colors</Modal.Header>
           <Modal.Content>
-            <Label content="Primary Color" />
-            <SliderPicker />
-            <Label content="Secondary Color"/>
-            <SliderPicker />
+            <Segment>
+              <Label content="Primary Color" />
+              <SliderPicker color={this.state.primary} onChange={this.primaryColorHandler}/>
+            </Segment>
+            <Segment>
+              <Label content="Secondary Color"/>
+              <SliderPicker color={this.state.secondary} onChange={this.secondaryColorHandler}/>
+            </Segment>
           </Modal.Content>
           <Modal.Actions>
             <Button color="green" inverted>
