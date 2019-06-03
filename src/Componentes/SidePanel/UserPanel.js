@@ -11,9 +11,35 @@ class UserPanel extends Component {
       modal: false,
       previewImage: null,
       croppedImage: null,
-      blob: null
+      blob: null,
+      userId: null,
+      storageRef: firebase.storage().ref(),
+      currentUserRef: null,
+      usersRef: firebase.database().ref("users"),
+      uploadedCroppedImage: null,
+      metadata: {
+        contentType: "image/jpg"
+      }
     };
     this.avatarRef = React.createRef();
+  };
+
+  componentDidUpdate(prevProps) {
+    if(this.props.user !== prevProps.user) {
+      this.setState({
+        userId: this.props.user.uid
+      })
+    }
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setState({
+          currentUserRef: firebase.auth().currentUser
+        })
+      }
+    })
   }
 
 
@@ -77,10 +103,47 @@ class UserPanel extends Component {
         })
       })
     }
+  };
+
+  uploadCroppedImage = () => {
+    this.state.storageRef
+    .child(`avatars/user-${this.state.userId}`)
+    .put(this.state.blob, this.state.metadata)
+    .then(snapshot => {
+      snapshot.ref.getDownloadURL().then(downloadUrl => {
+        this.setState({
+          uploadedCroppedImage: downloadUrl
+        }, () => this.changeAvatar())
+      })
+    })
+  };
+
+  changeAvatar = () => {
+    this.state.currentUserRef
+    .updateProfile({
+      photoURL: this.state.uploadedCroppedImage
+    })
+    .then(() => {
+      this.closeModal()
+    })
+    .catch(err => {
+      console.error(err)
+    });
+
+    this.state.usersRef
+    .child(this.state.userId)
+    .update({
+      avatar: this.state.uploadedCroppedImage
+    })
+    .then(() => {
+      console.log("Avatar updated")
+    })
+    .catch(err => {
+      console.error(err)
+    })
   }
 
   render() {
-    console.log(this.state.croppedImage)
     return (
       <Grid style={{backgroundColor: this.props.backgroundColor}}>
         <Grid.Column>
@@ -139,7 +202,7 @@ class UserPanel extends Component {
             </Grid>
           </Modal.Content>
           <Modal.Actions>
-            {this.state.croppedImage && <Button color="green" inverted>
+            {this.state.croppedImage && <Button color="green" inverted onClick={this.uploadCroppedImage}>
               <Icon name="save"/>
               Change Avatar
             </Button>}
