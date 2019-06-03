@@ -5,7 +5,8 @@ import {connect} from "react-redux";
 
 class UserPanel extends Component {
   state = {
-    modal: false
+    modal: false,
+    previewImage: null
   }
 
   dropdownOptions = () => [
@@ -45,6 +46,19 @@ class UserPanel extends Component {
       })
   };
 
+  changeHandler = (event) => {
+    const avatar = event.target.files[0];
+    const reader = new FileReader();
+    if(avatar) {
+      reader.readAsDataURL(avatar);
+      reader.addEventListener("load", () => {
+        this.setState({
+          previewImage: reader.result
+        })
+      })
+    }
+  }
+
   render() {
     return (
       <Grid style={{backgroundColor: this.props.backgroundColor}}>
@@ -75,6 +89,7 @@ class UserPanel extends Component {
               type="file"
               label="New Avatar"
               name="previewImage"
+              onChange={this.changeHandler}
             />
             <Grid centered stackable columns={2}>
               <Grid.Row centered>
