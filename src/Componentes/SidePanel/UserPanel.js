@@ -5,10 +5,17 @@ import {connect} from "react-redux";
 import AvatarEditor from "react-avatar-editor";
 
 class UserPanel extends Component {
-  state = {
-    modal: false,
-    previewImage: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      previewImage: null,
+      croppedImage: null,
+      blob: null
+    };
+    this.avatarRef = React.createRef();
   }
+
 
   dropdownOptions = () => [
     {
@@ -58,9 +65,22 @@ class UserPanel extends Component {
         })
       })
     }
+  };
+
+  croppedImageHandler = () => {
+    if(this.avatarRef.current) {
+      this.avatarRef.current.getImageScaledToCanvas().toBlob(blob => {
+        let imageUrl = URL.createObjectURL(blob);
+        this.setState({
+          croppedImage: imageUrl,
+          blob: blob
+        })
+      })
+    }
   }
 
   render() {
+    console.log(this.state.croppedImage)
     return (
       <Grid style={{backgroundColor: this.props.backgroundColor}}>
         <Grid.Column>
@@ -97,6 +117,7 @@ class UserPanel extends Component {
                 <Grid.Column className="ui center aligned grid">
                   {this.state.previewImage && (
                     <AvatarEditor
+                      ref={this.avatarRef}
                       image={this.state.previewImage}
                       width={120}
                       height={120}
@@ -105,17 +126,24 @@ class UserPanel extends Component {
                   )}
                 </Grid.Column>
                 <Grid.Column>
-                  Cropped image preview
+                  {this.state.croppedImage && (
+                    <Image
+                      style={{margin: "3.5rem auto"}}
+                      width={100}
+                      height={100}
+                      src={this.state.croppedImage}
+                    />
+                  )}
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="green" inverted>
+            {this.state.croppedImage && <Button color="green" inverted>
               <Icon name="save"/>
               Change Avatar
-            </Button>
-            <Button color="green" inverted>
+            </Button>}
+            <Button color="green" inverted onClick={this.croppedImageHandler}>
               <Icon name="image"/>
               Preview
             </Button>
