@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import{Grid, Header, Icon, Dropdown, Image, Modal, Input, Button} from "semantic-ui-react";
 import firebase from "../../firebase";
 import {connect} from "react-redux";
+import AvatarEditor from "react-avatar-editor";
 
 class UserPanel extends Component {
   state = {
@@ -94,7 +95,14 @@ class UserPanel extends Component {
             <Grid centered stackable columns={2}>
               <Grid.Row centered>
                 <Grid.Column className="ui center aligned grid">
-                  Image preview
+                  {this.state.previewImage && (
+                    <AvatarEditor
+                      image={this.state.previewImage}
+                      width={120}
+                      height={120}
+                      border={50}
+                    />
+                  )}
                 </Grid.Column>
                 <Grid.Column>
                   Cropped image preview
