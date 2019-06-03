@@ -9,6 +9,7 @@ class ColorPanel extends Component {
     primary: "",
     secondary: "",
     currentUser: null,
+    userColors: [],
     usersRef: firebase.database().ref("users")
   };
 
@@ -16,9 +17,23 @@ class ColorPanel extends Component {
     if (this.props.currentUser !== prevProps.currentUser) {
       this.setState({
         currentUser: this.props.currentUser
-      })
-    }
-  }
+      }, () => {
+        this.addListener(this.state.currentUser.uid);
+      });
+    };
+  };
+
+  addListener = (userId) => {
+    const userColors = [];
+    this.state.usersRef
+      .child(`${userId}/colors`)
+      .on("child_added", (snapshot) => {
+        userColors.unshift(snapshot.val());
+        this.setState({
+          userColors
+        })
+      });
+  };
 
   openModal = () => {
     this.setState({
@@ -67,6 +82,7 @@ class ColorPanel extends Component {
   };
 
   render() {
+    console.log(this.state.userColors);
     return (
       <Sidebar
         as={Menu}
