@@ -31,7 +31,7 @@ class UserPanel extends Component {
 
   render() {
     return (
-      <Grid style={{backgroundColor: "#4c3c4c"}}>
+      <Grid style={{backgroundColor: this.props.backgroundColor}}>
         <Grid.Column>
           <Grid.Row style={{padding: "1.2rem", margin: 0}}>
             <Header inverted floated="left" as="h2">

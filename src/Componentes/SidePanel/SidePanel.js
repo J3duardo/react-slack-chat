@@ -13,9 +13,9 @@ class SidePanel extends Component {
         inverted
         fixed="left"
         vertical
-        style={{backgroundColor: "#4c3c4c", fontSize: "1.2rem"}}
+        style={{backgroundColor: this.props.primaryColor, fontSize: "1.2rem"}}
       >
-        <UserPanel />
+        <UserPanel backgroundColor={this.props.primaryColor}/>
         <Starred />
         <Channels />
         <DirectMessages user={this.props.user}/>
