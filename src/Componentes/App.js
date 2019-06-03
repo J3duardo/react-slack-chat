@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 const App = (props) => {
   return (
     <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: "#eee"}}>
-      <ColorPanel />
+      <ColorPanel currentUser={props.user}/>
       <SidePanel user={props.user}/>
       <Grid.Column style={{marginLeft: 320}}>
         <Messages
