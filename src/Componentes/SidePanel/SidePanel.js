@@ -15,7 +15,7 @@ class SidePanel extends Component {
         vertical
         style={{backgroundColor: this.props.primaryColor, fontSize: "1.2rem"}}
       >
-        <UserPanel backgroundColor={this.props.primaryColor}/>
+        <UserPanel backgroundColor={this.props.primaryColor} user={this.props.user}/>
         <Starred />
         <Channels />
         <DirectMessages user={this.props.user}/>
