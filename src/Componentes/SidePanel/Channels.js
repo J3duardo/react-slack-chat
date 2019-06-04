@@ -19,6 +19,7 @@ class Channels extends Component {
     channelName: "",
     channelDetails: "",
     channelsRef: firebase.database().ref("channels"),
+    typingRef: firebase.database().ref("typing"),
     activeChannel: ""
   }
 
@@ -109,6 +110,10 @@ class Channels extends Component {
     this.props.currentChannel(channel);
     this.setActiveChannel(channel);
     this.props.setPrivateChannel(false);
+    this.state.typingRef
+    .child(this.props.currentChannelId)
+    .child(this.props.userId)
+    .remove()
   }
 
   setFirstChannel = () => {
@@ -178,7 +183,8 @@ const mapStateToProps = (state) => {
   return {
     userName: state.user.currentUser ? state.user.currentUser.displayName : "",
     userAvatar: state.user.currentUser ? state.user.currentUser.photoURL : "",
-    userId: state.user.currentUser ? state.user.currentUser.uid : ""
+    userId: state.user.currentUser ? state.user.currentUser.uid : "",
+    currentChannelId: state.currentChannel.currentChannel ? state.currentChannel.currentChannel.id : ""
   }
 }
 

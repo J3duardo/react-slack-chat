@@ -17,7 +17,8 @@ class MessagesForm extends Component {
     uploadState: "",
     percentUploaded: 0,
     storageRef: firebase.storage().ref(),
-    messagesRef: firebase.database().ref("messages")
+    messagesRef: firebase.database().ref("messages"),
+    typingRef: firebase.database().ref("typing")
   }
 
   openModal = () => {
@@ -65,7 +66,11 @@ class MessagesForm extends Component {
             loading: false,
             message: "",
             errors: []
-          })
+          });
+          this.state.typingRef
+          .child(this.props.channelId)
+          .child(this.props.currentUser.uid)
+          .remove()
         })
         .catch((err) => {
           console.log(err);
@@ -141,7 +146,21 @@ class MessagesForm extends Component {
       console.log(err);
       this.setState({errors: [...this.state.errors, err]})
     })
-  }
+  };
+
+  keyDownHandler = (e) => {
+    if(this.state.message) {
+      this.state.typingRef
+      .child(this.props.channelId)
+      .child(this.props.currentUser.uid)
+      .set(this.props.currentUser.displayName)
+    } else {
+      this.state.typingRef
+      .child(this.props.channelId)
+      .child(this.props.currentUser.uid)
+      .remove()
+    }
+  };
 
   render() {
     return (
@@ -157,6 +176,7 @@ class MessagesForm extends Component {
           value={this.state.message}
           disabled={this.state.loading}
           className={this.state.errors.some(err => { return err.message.includes("message")}) ? "error" : ""}
+          onKeyDown={this.keyDownHandler}
         />
         <Button.Group icon widths="2">
           <Button
