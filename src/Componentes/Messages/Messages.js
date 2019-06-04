@@ -6,6 +6,7 @@ import firebase from "../../firebase";
 import Message from "./Message";
 import {connect} from "react-redux";
 import {setUserPosts} from "../../actions";
+import Typing from "./Typing";
 
 class Messages extends Component {
   constructor(props) {
@@ -24,7 +25,10 @@ class Messages extends Component {
       privateChannel: false,
       privateMessagesRef: firebase.database().ref("privateMessages"),
       isChannelStarred: false,
-      usersRef: firebase.database().ref("users")
+      usersRef: firebase.database().ref("users"),
+      typingRef: firebase.database().ref("typing"),
+      typingUsers: [],
+      connectedRef: firebase.database().ref(".info/connected")
     };
 
     this.currentChannel = null;
@@ -56,8 +60,10 @@ class Messages extends Component {
 
   addListeners = (id) => {
     this.addMessageListener(id);
+    this.addTypingListeners(id);
   }
 
+  
   addMessageListener = (id) => {
     const loadedMessages = [];
     const ref = this.getMessagesRef();
@@ -69,6 +75,48 @@ class Messages extends Component {
       });
       this.usersCounter(loadedMessages);
       this.countUserPost(loadedMessages);
+    })
+  };
+
+  addTypingListeners = (id) => {
+    let typingUsers = [];
+    this.state.typingRef
+    .child(id).on("child_added", snapshot => {
+      if(snapshot.key !== this.state.user.uid) {
+        typingUsers = [...typingUsers, {id: snapshot.key, name: snapshot.val()}]
+      }
+    });
+    this.setState({
+      typingUsers
+    });
+
+    this.state.typingRef
+    .child(id).on("child_removed", snapshot => {
+      const index = typingUsers.findIndex(user => {
+        return user.uid === snapshot.key
+      });
+      if(index !== -1) {
+        typingUsers = typingUsers.filter(user => {
+          return user.uid !== snapshot.key
+        });
+        this.setState({
+          typingUsers
+        })
+      }
+    });
+
+    this.state.connectedRef.on("value", snapshot => {
+      if(snapshot.val() === true) {
+        this.state.typingRef
+        .child(id)
+        .child(this.state.user.uid)
+        .onDisconnect()
+        .remove(err => {
+          if(err !== null) {
+            console.log(err)
+          }
+        })
+      }
     })
   };
 
@@ -189,6 +237,19 @@ class Messages extends Component {
     })
   }
 
+  displayTypingUsers = (users) => {
+    if(users.length > 0) {
+      users.map((user) => {
+        return (
+          <div key={user.uid} style={{display: "flex", alignItems: "center"}}>
+            <span className="user__typing">{user.displayName} is typing</span>
+            <Typing />
+          </div>
+        )
+      })
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -205,6 +266,7 @@ class Messages extends Component {
             {this.state.searchTerm ?
             this.renderMessages(this.state.searchResults) :
             this.renderMessages(this.state.messages)}
+            {this.displayTypingUsers(this.state.typingUsers)}
           </Comment.Group>
         </Segment>
         <MessagesForm
