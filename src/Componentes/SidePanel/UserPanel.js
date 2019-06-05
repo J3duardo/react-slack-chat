@@ -36,7 +36,8 @@ class UserPanel extends Component {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
         this.setState({
-          currentUserRef: firebase.auth().currentUser
+          currentUserRef: firebase.auth().currentUser,
+          userId: user.uid
         })
       }
     })
@@ -144,6 +145,7 @@ class UserPanel extends Component {
   }
 
   render() {
+    console.log(this.state.userId)
     return (
       <Grid style={{backgroundColor: this.props.backgroundColor}}>
         <Grid.Column>
