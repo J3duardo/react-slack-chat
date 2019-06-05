@@ -16,13 +16,21 @@ class ColorPanel extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.currentUser !== prevProps.currentUser) {
+    if(prevProps.currentUser !== this.props.currentUser) {
       this.setState({
         currentUser: this.props.currentUser
       }, () => {
-        this.addListener(this.state.currentUser.uid);
-      });
-    };
+        this.state.currentUser && this.addListener(this.state.currentUser.uid);
+      })
+    }
+
+    // if (this.props.currentUser) {
+    //   this.setState({
+    //     currentUser: this.props.currentUser
+    //   }, () => {
+    //     this.addListener(this.state.currentUser.uid);
+    //   });
+    // };    
   };
 
   addListener = (userId) => {
@@ -30,7 +38,7 @@ class ColorPanel extends Component {
     this.state.usersRef
       .child(`${userId}/colors`)
       .on("child_added", (snapshot) => {
-        userColors.unshift(snapshot.val());
+        userColors.push(snapshot.val());
         this.setState({
           userColors
         })
@@ -101,7 +109,7 @@ class ColorPanel extends Component {
   }
 
   render() {
-    console.log(this.state.userColors);
+    console.log(this.state.currentUser, this.state.usersRef);
     return (
       <Sidebar
         as={Menu}
@@ -150,6 +158,12 @@ class ColorPanel extends Component {
   }
 };
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.user.currentUser
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setColors: (primary, secondary) => {
@@ -158,4 +172,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(ColorPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(ColorPanel);
