@@ -109,7 +109,7 @@ class ColorPanel extends Component {
   }
 
   render() {
-    console.log(this.state.currentUser, this.state.usersRef);
+    // console.log(this.state.currentUser, this.state.usersRef);
     return (
       <Sidebar
         as={Menu}
