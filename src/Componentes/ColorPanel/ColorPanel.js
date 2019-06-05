@@ -15,22 +15,26 @@ class ColorPanel extends Component {
     usersRef: firebase.database().ref("users")
   };
 
+  componentDidMount() {
+    this.setState({
+      currentUser: this.props.user
+    }, () => {
+      if (this.state.currentUser) {
+        this.addListener(this.state.currentUser.uid)
+      }
+    })
+  };
+
   componentDidUpdate(prevProps) {
-    if(prevProps.currentUser !== this.props.currentUser) {
+    if (prevProps.user !== this.props.user) {
       this.setState({
-        currentUser: this.props.currentUser
+        currentUser: this.props.user
       }, () => {
-        this.state.currentUser && this.addListener(this.state.currentUser.uid);
+        if(this.state.currentUser) {
+          this.addListener(this.state.currentUser.uid)
+        }
       })
     }
-
-    // if (this.props.currentUser) {
-    //   this.setState({
-    //     currentUser: this.props.currentUser
-    //   }, () => {
-    //     this.addListener(this.state.currentUser.uid);
-    //   });
-    // };    
   };
 
   addListener = (userId) => {
@@ -109,7 +113,6 @@ class ColorPanel extends Component {
   }
 
   render() {
-    // console.log(this.state.currentUser, this.state.usersRef);
     return (
       <Sidebar
         as={Menu}
@@ -158,12 +161,6 @@ class ColorPanel extends Component {
   }
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.user.currentUser
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     setColors: (primary, secondary) => {
@@ -172,4 +169,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ColorPanel);
+export default connect(null, mapDispatchToProps)(ColorPanel);

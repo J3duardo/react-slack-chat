@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 const App = (props) => {
   return (
     <Grid columns="equal" className="app" style={{margin: 0, backgroundColor: props.secondaryColor}}>
-      <ColorPanel/>
+      <ColorPanel user={props.user}/>
       <SidePanel
         user={props.user}
         primaryColor={props.primaryColor}
@@ -26,8 +26,6 @@ const App = (props) => {
       <Grid.Column width={4}>
         <MetaPanel
           isPrivateChannel={props.isPrivateChannel}
-          // currentChannel={props.channel}
-          // userPosts={props.userPosts}
         />
       </Grid.Column>
     </Grid>
