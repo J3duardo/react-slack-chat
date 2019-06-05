@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Segment, Accordion, Header, Icon, Image, List} from "semantic-ui-react";
+import {connect} from "react-redux";
 
 class MetaPanel extends Component {
   state = {
@@ -7,21 +8,16 @@ class MetaPanel extends Component {
     isPrivateChannel: this.props.isPrivateChannel,
     currentChannel: null,
     userPosts: null
-  }
+  };
 
   componentDidUpdate(prevProps) {
-    if(this.props.currentChannel !== prevProps.currentChannel) {
+    if(this.props !== prevProps) {
       this.setState({
         currentChannel: this.props.currentChannel,
-      })
-    }
-
-    if(prevProps.userPosts !== this.props.userPosts) {
-      this.setState({
         userPosts: this.props.userPosts
       })
     }
-  }
+  };
 
   setActiveIndex = (event, titleProps) =>{
     const newIndex = this.state.activeIndex === titleProps.index ? -1 : titleProps.index;
@@ -45,6 +41,19 @@ class MetaPanel extends Component {
         </List.Item>
       )
     })
+  }
+
+  renderCreatedBy = () => {
+    if (this.state.currentChannel) {
+      const info = Object.values(this.state.currentChannel);
+      console.log(info[0].avatar, info[0].name)
+      return (
+        <React.Fragment>
+          <Image circular src={info[0].avatar} style={{marginRight: "10px"}}/>
+          <span>{info[0].name}</span>
+        </React.Fragment>
+      )
+    }
   }
 
   render() {
@@ -97,14 +106,20 @@ class MetaPanel extends Component {
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 2}>
             <Header>
-              {this.state.currentChannel ? <Image circular src={this.state.currentChannel.createdBy.avatar}/> : <p>No channel to display...</p>}
-              {this.state.currentChannel ? this.state.currentChannel.createdBy.name : <p>No channel to display...</p>}
+              {this.state.currentChannel ? this.renderCreatedBy() : <p>No channel to display...</p>}
             </Header>
           </Accordion.Content>
         </Accordion>
       </Segment>
     );
   }
+};
+
+const mapStateToProps = (state) => {
+  return {
+    currentChannel: state.currentChannel.currentChannel,
+    userPosts: state.user.userPosts
+  }
 }
 
-export default MetaPanel;
+export default connect(mapStateToProps)(MetaPanel);
