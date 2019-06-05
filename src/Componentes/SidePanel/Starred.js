@@ -17,6 +17,12 @@ class Starred extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.currentUser) {
+      this.addListeners(this.props.currentUser.uid);
+    }
+  }
+
   addListeners = (userId) => {
     this.state.usersRef
     .child(userId)
