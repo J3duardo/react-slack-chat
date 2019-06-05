@@ -50,19 +50,18 @@ class Messages extends Component {
       channel: channel,
       user: user,
       privateChannel: isPrivate
+    }, () => {
+      if (this.state.channel && this.state.user) {
+        this.addListeners(this.state.channel.id, this.state.user.uid);
+      }
     })
-
-    if(channel && user) {
-      this.addListeners(channel.id);
-      this.addUserStarListener(channel.id, user.uid)
-    }
   }
 
-  addListeners = (id) => {
-    this.addMessageListener(id);
-    this.addTypingListeners(id);
+  addListeners = (channelId, userId) => {
+    this.addMessageListener(channelId);
+    this.addUserStarListener(channelId, userId);
+    this.addTypingListeners(channelId);
   }
-
   
   addMessageListener = (id) => {
     const loadedMessages = [];
