@@ -22,6 +22,16 @@ class DirectMessages extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.user) {
+      this.setState({
+        user: this.props.user
+      }, () => {
+        this.state.user && this.addListeners(this.state.user.uid)
+      })
+    }
+  }
+
   addListeners = (userId) => {
     let loadedUsers = [];
     this.state.usersRef.on("child_added", snapshot => {
