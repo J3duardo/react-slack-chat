@@ -26,8 +26,8 @@ const App = (props) => {
       <Grid.Column width={4}>
         <MetaPanel
           isPrivateChannel={props.isPrivateChannel}
-          currentChannel={props.channel}
-          userPosts={props.userPosts}
+          // currentChannel={props.channel}
+          // userPosts={props.userPosts}
         />
       </Grid.Column>
     </Grid>
