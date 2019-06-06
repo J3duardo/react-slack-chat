@@ -145,7 +145,6 @@ class UserPanel extends Component {
   }
 
   render() {
-    console.log(this.state.userId)
     return (
       <Grid style={{backgroundColor: this.props.backgroundColor}}>
         <Grid.Column>

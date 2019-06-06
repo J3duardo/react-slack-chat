@@ -46,7 +46,6 @@ class MetaPanel extends Component {
   renderCreatedBy = () => {
     if (this.state.currentChannel) {
       const info = Object.values(this.state.currentChannel);
-      console.log(info[0].avatar, info[0].name)
       return (
         <React.Fragment>
           <Image circular src={info[0].avatar} style={{marginRight: "10px"}}/>
