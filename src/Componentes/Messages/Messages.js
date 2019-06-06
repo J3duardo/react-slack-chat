@@ -9,52 +9,37 @@ import {setUserPosts} from "../../actions";
 import Typing from "./Typing";
 
 class Messages extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      channel: null,
-      user: null,
-      messagesRef: firebase.database().ref("messages"),
-      messages: [],
-      loadingMessages: true,
-      uniqueUsers: [],
-      searchTerm: "",
-      searchLoading: false,
-      searchResults: [],
-      privateChannel: false,
-      privateMessagesRef: firebase.database().ref("privateMessages"),
-      isChannelStarred: false,
-      usersRef: firebase.database().ref("users"),
-      typingRef: firebase.database().ref("typing"),
-      typingUsers: [],
-      connectedRef: firebase.database().ref(".info/connected")
-    };
-
-    this.currentChannel = null;
-    this.currentUser = null;
-    this.isPrivate = false;
-  }
+  state = {
+    channel: null,
+    user: null,
+    messagesRef: firebase.database().ref("messages"),
+    messages: [],
+    loadingMessages: true,
+    uniqueUsers: [],
+    searchTerm: "",
+    searchLoading: false,
+    searchResults: [],
+    privateChannel: false,
+    privateMessagesRef: firebase.database().ref("privateMessages"),
+    isChannelStarred: false,
+    usersRef: firebase.database().ref("users"),
+    typingRef: firebase.database().ref("typing"),
+    typingUsers: [],
+    connectedRef: firebase.database().ref(".info/connected")
+  };
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
-      this.currentChannel = this.props.channel;
-      this.currentUser = this.props.user;
-      this.isPrivate = this.props.isPrivateChannel;
-      this.updateState(this.currentChannel, this.currentUser, this.isPrivate);
-    }    
-  }
-
-  updateState = (channel, user, isPrivate) => {
-    this.setState ({
-      channel: channel,
-      user: user,
-      privateChannel: isPrivate
-    }, () => {
-      if (this.state.channel && this.state.user) {
-        this.addListeners(this.state.channel.id, this.state.user.uid);
-      }
-    })
+      this.setState({
+        channel: this.props.channel,
+        user: this.props.user,
+        isPrivateChannel: this.props.isPrivateChannel
+      }, () => {
+        if(this.state.channel && this.state.user) {
+          this.addListeners(this.state.channel.id, this.state.user.uid);
+        }
+      })
+    }
   }
 
   addListeners = (channelId, userId) => {
@@ -250,6 +235,7 @@ class Messages extends Component {
   }
 
   render() {
+    console.log(this.state.user, this.state.channel)
     return (
       <React.Fragment>
         <MessagesHeader
