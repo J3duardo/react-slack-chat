@@ -9,24 +9,28 @@ import {setUserPosts} from "../../actions";
 import Typing from "./Typing";
 
 class Messages extends Component {
-  state = {
-    channel: null,
-    user: null,
-    messagesRef: firebase.database().ref("messages"),
-    messages: [],
-    loadingMessages: true,
-    uniqueUsers: [],
-    searchTerm: "",
-    searchLoading: false,
-    searchResults: [],
-    privateChannel: false,
-    privateMessagesRef: firebase.database().ref("privateMessages"),
-    isChannelStarred: false,
-    usersRef: firebase.database().ref("users"),
-    typingRef: firebase.database().ref("typing"),
-    typingUsers: [],
-    connectedRef: firebase.database().ref(".info/connected")
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      channel: null,
+      user: null,
+      messagesRef: firebase.database().ref("messages"),
+      messages: [],
+      loadingMessages: true,
+      uniqueUsers: [],
+      searchTerm: "",
+      searchLoading: false,
+      searchResults: [],
+      privateChannel: false,
+      privateMessagesRef: firebase.database().ref("privateMessages"),
+      isChannelStarred: false,
+      usersRef: firebase.database().ref("users"),
+      typingRef: firebase.database().ref("typing"),
+      typingUsers: [],
+      connectedRef: firebase.database().ref(".info/connected")
+    };
+    this.messagesScrollRef = React.createRef()
+  }  
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
@@ -38,8 +42,17 @@ class Messages extends Component {
         if(this.state.channel && this.state.user) {
           this.addListeners(this.state.channel.id, this.state.user.uid);
         }
-      })
+      });
+
     }
+    
+    if(this.messagesScrollRef.current) {
+      this.scrollToBotomHandler()
+    }
+  }
+
+  scrollToBotomHandler = () => {
+    this.messagesScrollRef.current.scrollIntoView({behavior: "smooth"});    
   }
 
   addListeners = (channelId, userId) => {
@@ -251,11 +264,13 @@ class Messages extends Component {
             this.renderMessages(this.state.searchResults) :
             this.renderMessages(this.state.messages)}
             {this.displayTypingUsers(this.state.typingUsers)}
+            <div ref={this.messagesScrollRef}></div>
           </Comment.Group>
         </Segment>
         <MessagesForm
           isPrivateChannel={this.state.privateChannel}
           getMessagesRef={this.getMessagesRef}
+          scrollToBotomHandler={this.scrollToBotomHandler}
         />
       </React.Fragment>
     );
