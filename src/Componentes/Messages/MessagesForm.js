@@ -5,6 +5,8 @@ import firebase from "../../firebase";
 import FileModal from "./FileModal";
 import uuidv4 from "uuid/v4";
 import ProgressBar from "./ProgressBar";
+import {Picker, emojiIndex} from "emoji-mart";
+import "emoji-mart/css/emoji-mart.css";
 
 
 class MessagesForm extends Component {
@@ -18,7 +20,8 @@ class MessagesForm extends Component {
     percentUploaded: 0,
     storageRef: firebase.storage().ref(),
     messagesRef: firebase.database().ref("messages"),
-    typingRef: firebase.database().ref("typing")
+    typingRef: firebase.database().ref("typing"),
+    emojiPicker: false
   }
 
   openModal = () => {
@@ -162,14 +165,28 @@ class MessagesForm extends Component {
     }
   };
 
+  togglePickerHandler = () => {
+    this.setState({
+      emojiPicker: !this.state.emojiPicker
+    })
+  }
+
   render() {
     return (
       <Segment className="message__form">
+        {this.state.emojiPicker && (
+          <Picker 
+            set="apple"
+            className="emojipicker"
+            title="Pick your emoji"
+            emoji="point_up"
+          />
+        )}
         <Input 
           fluid
           name="message"
           style={{marginBottom: "0.7rem"}}
-          label={<Button icon="add"/>}
+          label={<Button icon="add" onClick={this.togglePickerHandler}/>}
           labelPosition="left"
           placeholder="Write your message"
           onChange={this.onChangeHandler}
