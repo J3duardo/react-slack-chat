@@ -235,7 +235,6 @@ class Messages extends Component {
   }
 
   render() {
-    console.log(this.state.user, this.state.channel)
     return (
       <React.Fragment>
         <MessagesHeader
