@@ -10,19 +10,23 @@ import "emoji-mart/css/emoji-mart.css";
 
 
 class MessagesForm extends Component {
-  state = {
-    message: "",
-    loading: false,
-    errors: [],
-    modal: false,
-    uploadTask: null,
-    uploadState: "",
-    percentUploaded: 0,
-    storageRef: firebase.storage().ref(),
-    messagesRef: firebase.database().ref("messages"),
-    typingRef: firebase.database().ref("typing"),
-    emojiPicker: false
-  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: "",
+      loading: false,
+      errors: [],
+      modal: false,
+      uploadTask: null,
+      uploadState: "",
+      percentUploaded: 0,
+      storageRef: firebase.storage().ref(),
+      messagesRef: firebase.database().ref("messages"),
+      typingRef: firebase.database().ref("typing"),
+      emojiPicker: false
+    }
+    this.inputRef = React.createRef()
+  }  
 
   openModal = () => {
     this.setState({modal: true})
@@ -166,10 +170,35 @@ class MessagesForm extends Component {
   };
 
   togglePickerHandler = () => {
+    this.inputRef.current.focus();
     this.setState({
       emojiPicker: !this.state.emojiPicker
     })
-  }
+  };
+
+  addEmojiHandler = (emoji) => {
+    const prevMessage = this.state.message;
+    const updatedMessage = this.colonToUnicode(`${prevMessage} ${emoji.colons}`);
+    this.setState({
+      message: updatedMessage,
+      emojiPicker: false
+    });
+  };
+
+  colonToUnicode = (newMessage) => {
+    return newMessage.replace(/:[A-Za-z0-9_+-]+:/g, x => {
+      x = x.replace(/:/g, "");
+      let emoji = emojiIndex.emojis[x];
+      if (typeof emoji !== "undefined") {
+        let unicode = emoji.native;
+        if ( typeof unicode !== "undefined") {
+          return unicode;
+        }
+      }
+      x = ":" + x + ":";
+      return x;
+    })
+  };
 
   render() {
     return (
@@ -180,6 +209,7 @@ class MessagesForm extends Component {
             className="emojipicker"
             title="Pick your emoji"
             emoji="point_up"
+            onSelect={this.addEmojiHandler}
           />
         )}
         <Input 
@@ -194,6 +224,7 @@ class MessagesForm extends Component {
           disabled={this.state.loading}
           className={this.state.errors.some(err => { return err.message.includes("message")}) ? "error" : ""}
           onKeyDown={this.keyDownHandler}
+          ref={this.inputRef}
         />
         <Button.Group icon widths="2">
           <Button
