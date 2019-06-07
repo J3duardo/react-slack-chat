@@ -216,7 +216,13 @@ class MessagesForm extends Component {
           fluid
           name="message"
           style={{marginBottom: "0.7rem"}}
-          label={<Button icon="add" onClick={this.togglePickerHandler}/>}
+          label={
+            <Button
+              icon={this.state.emojiPicker ? "close" : "add"}
+              content={this.state.emojiPicker ? "close" : "Add emoji"}
+              onClick={this.togglePickerHandler}
+            />
+          }
           labelPosition="left"
           placeholder="Write your message"
           onChange={this.onChangeHandler}
