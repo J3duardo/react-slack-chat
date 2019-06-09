@@ -7,6 +7,7 @@ import Message from "./Message";
 import {connect} from "react-redux";
 import {setUserPosts} from "../../actions";
 import Typing from "./Typing";
+import Skeleton from "./Skeleton";
 
 class Messages extends Component {
   constructor(props) {
@@ -137,8 +138,6 @@ class Messages extends Component {
      return messages.map((message, i) => {
         return <Message message={message} key={i} user={this.state.user}/>
       })
-    }else {
-      return <p>No messages to display.</p>
     }
   }
 
@@ -247,6 +246,16 @@ class Messages extends Component {
     }
   }
 
+  messagesSkeleton = (messages) => {
+    return messages.length === 0 ? (
+      <React.Fragment>
+        {[...Array(9)].map((el, i) => {
+          return <Skeleton key={i}/>
+        })}
+      </React.Fragment>
+    ) : null
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -260,6 +269,7 @@ class Messages extends Component {
         />
         <Segment>
           <Comment.Group className="messages">
+            {this.messagesSkeleton(this.state.messages)}
             {this.state.searchTerm ?
             this.renderMessages(this.state.searchResults) :
             this.renderMessages(this.state.messages)}
