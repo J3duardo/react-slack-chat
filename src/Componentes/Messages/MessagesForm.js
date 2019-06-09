@@ -156,6 +156,10 @@ class MessagesForm extends Component {
   };
 
   keyDownHandler = (e) => {
+    if(e.keyCode === 13) {
+      this.sendMessage()
+    }
+    
     if(this.state.message) {
       this.state.typingRef
       .child(this.props.channelId)
