@@ -231,7 +231,7 @@ class Messages extends Component {
   }
 
   starChannel = () => {
-    if(this.state.isChannelStarred){
+    if(this.state.isChannelStarred && this.state.channel.createdBy){
       this.state.usersRef
       .child(`${this.state.user.uid}/starred`)
       .update({
