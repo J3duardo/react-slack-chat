@@ -28,10 +28,11 @@ class Messages extends Component {
       usersRef: firebase.database().ref("users"),
       typingRef: firebase.database().ref("typing"),
       typingUsers: [],
-      connectedRef: firebase.database().ref(".info/connected")
+      connectedRef: firebase.database().ref(".info/connected"),
+      listeners: []
     };
     this.messagesScrollRef = React.createRef()
-  }  
+  }
 
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
@@ -49,6 +50,40 @@ class Messages extends Component {
     
     if(this.messagesScrollRef.current) {
       this.scrollToBotomHandler()
+    }
+  }
+
+  componentDidMount() {
+    if (this.starChannel.channel && this.state.user) {
+      this.removeListeners(this.state.listeners)
+    }
+  }
+
+  componentWillUnmount() {
+    this.removeListeners(this.state.listeners);
+    this.state.connectedRef.off();
+  }
+
+  removeListeners = (listeners) => {
+    listeners.forEach(listener => {
+      listener.ref.child(listener.id).off(listener.event)
+    })
+  }
+
+  addToListeners = (id, ref, event) => {
+    const index = this.state.listeners.findIndex(listener => {
+      return listener.id === id && listener.ref === ref && listener.event === event
+    });
+
+    if (index === -1) {
+      const newListener = {
+        id: id,
+        ref: ref,
+        event: event
+      };
+      this.setState({
+        listeners: [...this.state.listeners, newListener]
+      })
     }
   }
 
@@ -73,7 +108,9 @@ class Messages extends Component {
       });
       this.usersCounter(loadedMessages);
       this.countUserPost(loadedMessages);
-    })
+    });
+
+    this.addToListeners(id, ref, "child_added")
   };
 
   addTypingListeners = (id) => {
@@ -87,6 +124,7 @@ class Messages extends Component {
     this.setState({
       typingUsers
     });
+    this.addToListeners(id, this.state.typingRef, "child_added")
 
     this.state.typingRef
     .child(id).on("child_removed", snapshot => {
@@ -102,6 +140,7 @@ class Messages extends Component {
         })
       }
     });
+    this.addToListeners(id, this.state.typingRef, "child_removed")
 
     this.state.connectedRef.on("value", snapshot => {
       if(snapshot.val() === true) {

@@ -11,6 +11,9 @@ class Channels extends Component {
 
   componentWillUnmount() {
     this.state.channelsRef.off();
+    this.state.channels.forEach(channel => {
+      this.state.messagesRef.child(channel.id).off()
+    });
   }
 
   state = {
@@ -20,6 +23,7 @@ class Channels extends Component {
     channelDetails: "",
     channelsRef: firebase.database().ref("channels"),
     typingRef: firebase.database().ref("typing"),
+    messagesRef: firebase.database().ref("messages"),
     activeChannel: ""
   }
 

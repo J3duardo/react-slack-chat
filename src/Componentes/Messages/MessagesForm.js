@@ -26,7 +26,16 @@ class MessagesForm extends Component {
       emojiPicker: false
     }
     this.inputRef = React.createRef()
-  }  
+  }
+
+  componentWillUnmount() {
+    if (this.state.uploadTask !== null) {
+      this.state.uploadTask.cancel();
+      this.setState({
+        uploadTask: null
+      })
+    }
+  }
 
   openModal = () => {
     this.setState({modal: true})
