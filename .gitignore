@@ -2,3 +2,4 @@
 /coverage
 /build
 .firebase
+/src/firebase.js
