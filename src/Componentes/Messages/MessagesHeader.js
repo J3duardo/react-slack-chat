@@ -4,11 +4,11 @@ import {Header, Segment, Input, Icon} from "semantic-ui-react";
 class MessagesHeader extends Component {
   displayUsers = (users) => {
     if(users.length > 1) {
-      return `${users.length} users`
+      return `${users.length} usuarios`
     } else if(users.length === 1) {
-      return "1 user"
+      return "1 usuario"
     } else {
-      return "No users in this channel."
+      return "Este canal no posee usuarios."
     }
   }
 
@@ -34,15 +34,13 @@ class MessagesHeader extends Component {
             {this.displayUsers(this.props.uniqueUsers)}          
           </Header.Subheader>
         </Header>
-
-        {/* Channel search input */}
         <Header floated="right">
           <Input
             onChange={this.onChangeHandler}
             size="mini"
             icon="search"
             name="searchTerm"
-            placeholder="Search Messages"
+            placeholder="Buscar mensajes"
           />
         </Header>
       </Segment>
