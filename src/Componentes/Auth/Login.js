@@ -61,7 +61,7 @@ class Login extends Component {
         <GridColumn style={{maxWidth: 450}}>
           <Header as="h1" icon color="violet" textAlign="center">
             <Icon name="code branch"/>
-            Login to DevChat
+            DevChat
           </Header>
           <Form size="large" onSubmit={this.onSubmitHandler}>
             <Segment stacked>
@@ -71,7 +71,7 @@ class Login extends Component {
                 type="email"
                 icon="mail"
                 iconPosition="left"
-                placeholder="Email Address"
+                placeholder="Email"
                 value={email}
                 onChange={this.onChangeHandler}
               />
@@ -82,7 +82,7 @@ class Login extends Component {
                 type="password"
                 icon="lock"
                 iconPosition="left"
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={password}
                 onChange={this.onChangeHandler}
               />
@@ -93,7 +93,7 @@ class Login extends Component {
                 disabled={loading}
                 className={loading ? "loading" : ""}
               >
-                Submit
+                Iniciar sesión
               </Button>
             </Segment>
           </Form>
@@ -104,7 +104,7 @@ class Login extends Component {
             </Message>
           )}
           <Message>
-            Don't have an account? <Link to="/register">Register</Link>
+            ¿No posee cuenta en DevChat? <Link to="/register">Registrarse</Link>
           </Message>
         </GridColumn>
       </Grid>

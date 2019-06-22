@@ -109,7 +109,7 @@ class Register extends Component {
         <GridColumn style={{maxWidth: 450}}>
           <Header as="h1" icon color="orange" textAlign="center">
             <Icon name="puzzle piece"/>
-            Register for DevChat
+            DevChat
           </Header>
           <Form size="large" onSubmit={this.onSubmitHandler}>
             <Segment stacked>
@@ -119,7 +119,7 @@ class Register extends Component {
                 type="text"
                 icon="user"
                 iconPosition="left"
-                placeholder="Username"
+                placeholder="Nombre de usuario"
                 value={username}
                 onChange={this.onChangeHandler}
               />
@@ -130,7 +130,7 @@ class Register extends Component {
                 type="email"
                 icon="mail"
                 iconPosition="left"
-                placeholder="Email Address"
+                placeholder="Email"
                 value={email}
                 onChange={this.onChangeHandler}
               />
@@ -141,7 +141,7 @@ class Register extends Component {
                 type="password"
                 icon="lock"
                 iconPosition="left"
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={password}
                 onChange={this.onChangeHandler}
               />
@@ -152,7 +152,7 @@ class Register extends Component {
                 type="password"
                 icon="repeat"
                 iconPosition="left"
-                placeholder="Password Confirmation"
+                placeholder="Confirmar contraseña"
                 value={passwordConfirmation}
                 onChange={this.onChangeHandler}
               />
@@ -163,7 +163,7 @@ class Register extends Component {
                 disabled={loading}
                 className={loading ? "loading" : ""}
               >
-                Submit
+                Registrarse
               </Button>
             </Segment>
           </Form>
@@ -174,7 +174,7 @@ class Register extends Component {
             </Message>
           )}
           <Message>
-            Already a user? <Link to="/login">Login</Link>
+            ¿Ya posee cuenta en DevChat? <Link to="/login">Iniciar sesión</Link>
           </Message>
         </GridColumn>
       </Grid>
