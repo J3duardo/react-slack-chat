@@ -138,15 +138,15 @@ class ColorPanel extends Component {
         {this.displayUserColors(this.state.userColors)}
 
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
-          <Modal.Header>Choose App Colors</Modal.Header>
+          <Modal.Header>Agregar Colores</Modal.Header>
           <Modal.Content>
             <Segment style={{display: "flex", justifyContent: "space-around"}}>
               <div>
-                <Label content="Choose the Primary Color" />
+                <Label content="Elija el color primario de la app" />
                 <SketchPicker color={this.state.primary} onChange={this.primaryColorHandler}/>
               </div>
               <div>
-                <Label content="Choose the Secondary Color"/>
+                <Label content="Elija el color secundario de la app"/>
                 <SketchPicker color={this.state.secondary} onChange={this.secondaryColorHandler}/>
               </div>
             </Segment>
@@ -154,11 +154,11 @@ class ColorPanel extends Component {
           <Modal.Actions>
             <Button color="green" inverted onClick={this.saveColorsHandler}>
               <Icon name="checkmark"/>
-              Save Colors
+              Guardar colores
             </Button>
             <Button color="red" inverted onClick={this.closeModal}>
               <Icon name="remove"/>
-              Cancel
+              Cancelar
             </Button>
           </Modal.Actions>
         </Modal>
