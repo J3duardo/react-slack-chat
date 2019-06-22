@@ -220,7 +220,7 @@ class MessagesForm extends Component {
           <Picker 
             set="apple"
             className="emojipicker"
-            title="Pick your emoji"
+            title="Seleccionar emoji"
             emoji="point_up"
             onSelect={this.addEmojiHandler}
           />
@@ -232,12 +232,12 @@ class MessagesForm extends Component {
           label={
             <Button
               icon={this.state.emojiPicker ? "close" : "add"}
-              content={this.state.emojiPicker ? "close" : "Add emoji"}
+              content={this.state.emojiPicker ? "Cerrar" : "Añadir emoji"}
               onClick={this.togglePickerHandler}
             />
           }
           labelPosition="left"
-          placeholder="Write your message"
+          placeholder="Escribir mensaje"
           onChange={this.onChangeHandler}
           value={this.state.message}
           disabled={this.state.loading}
@@ -248,7 +248,7 @@ class MessagesForm extends Component {
         <Button.Group icon widths="2">
           <Button
             color="orange"
-            content="Add reply"
+            content="Enviar mensaje"
             labelPosition="left"
             icon="edit"
             onClick={this.sendMessage}
@@ -256,7 +256,7 @@ class MessagesForm extends Component {
           <Button
             color="teal"
             disabled={this.state.uploadState === "uploading"}
-            content="Upload media"
+            content="Enviar imagen"
             labelPosition="right"
             icon="cloud upload"
             onClick={this.openModal}
