@@ -47,16 +47,16 @@ class UserPanel extends Component {
   dropdownOptions = () => [
     {
       key: "user",
-      text: <span>Signed in as <strong>{this.props.userName}</strong></span>,
+      text: <span>Logeado como <strong>{this.props.userName}</strong></span>,
       disabled: true
     },
     {
       key: "avatar",
-      text: <span onClick={this.openModal}>Change Avatar</span>
+      text: <span onClick={this.openModal}>Cambiar Avatar</span>
     },
     {
       key: "signout",
-      text: <span onClick={this.signOutHandler}>Sign Out</span>
+      text: <span onClick={this.signOutHandler}>Cerrar sesión</span>
     }
   ];
 
@@ -167,12 +167,12 @@ class UserPanel extends Component {
           </Header>
         </Grid.Column>
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
-          <Modal.Header>Change Avatar</Modal.Header>
+          <Modal.Header>Cambiar Avatar</Modal.Header>
           <Modal.Content>
             <Input
               fluid
               type="file"
-              label="New Avatar"
+              label="Nuevo avatar"
               name="previewImage"
               onChange={this.changeHandler}
             />
@@ -205,15 +205,15 @@ class UserPanel extends Component {
           <Modal.Actions>
             {this.state.croppedImage && <Button color="green" inverted onClick={this.uploadCroppedImage}>
               <Icon name="save"/>
-              Change Avatar
+              Cambiar avatar
             </Button>}
             <Button color="green" inverted onClick={this.croppedImageHandler}>
               <Icon name="image"/>
-              Preview
+              Previsualizar
             </Button>
             <Button color="red" inverted onClick={this.closeModal}>
               <Icon name="remove"/>
-              Cancel
+              Cancelar
             </Button>
           </Modal.Actions>
         </Modal>
