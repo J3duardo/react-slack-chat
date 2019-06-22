@@ -76,7 +76,7 @@ class Starred extends Component {
         )
       })
     } else {
-      return <p style={{fontSize: "1rem", color: "#fff"}}>No channels to display.</p>
+      return <p style={{fontSize: "1rem", color: "#fff"}}>No hay canales para mostrar</p>
     }
   }
 
@@ -97,7 +97,7 @@ class Starred extends Component {
       <Menu.Menu style={{paddingBottom: "2rem"}}>
         <Menu.Item>
           <span>
-            <Icon name="star"/> Starred
+            <Icon name="star"/> Favoritos
           </span>{" "}
           ({this.state.starredChannels.length})
         </Menu.Item>

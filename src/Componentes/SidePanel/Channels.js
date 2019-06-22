@@ -106,7 +106,7 @@ class Channels extends Component {
         )
       })
     } else {
-      return <p style={{fontSize: "1rem", color: "#fff"}}>No channels to display.</p>
+      return <p style={{fontSize: "1rem", color: "#fff"}}>No hay canales para mostrar</p>
     }
   }
 
@@ -140,7 +140,7 @@ class Channels extends Component {
         <Menu.Menu style={{paddingBottom: "2rem"}}>
           <Menu.Item>
             <span>
-              <Icon name="exchange"/> Channels
+              <Icon name="exchange"/> Canales
             </span>{" "}
             ({this.state.channels.length}) <Icon name="add" onClick={this.openModal}/>
           </Menu.Item>
@@ -148,13 +148,13 @@ class Channels extends Component {
         </Menu.Menu>
 
         <Modal basic open={this.state.modal} onClose={this.closeModal}>
-          <Modal.Header>Add a Channel</Modal.Header>
+          <Modal.Header>Agregar canal</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.onSubmitHandler}>
               <Form.Field>
                 <Input
                   fluid
-                  label="Name of Channel"
+                  label="Nombre del Canal"
                   name="channelName"
                   onChange={this.onChangeHandler}
                 />
@@ -162,7 +162,7 @@ class Channels extends Component {
               <Form.Field>
                 <Input
                   fluid
-                  label="About the Channel"
+                  label="Acerca del Canal"
                   name="channelDetails"
                   onChange={this.onChangeHandler}
                 />
@@ -171,10 +171,10 @@ class Channels extends Component {
           </Modal.Content>
           <Modal.Actions>
             <Button color="green" inverted onClick={this.onSubmitHandler}>
-              <Icon name="checkmark"/> Add
+              <Icon name="checkmark"/> Agregar
             </Button>
             <Button color="red" inverted onClick={this.closeModal}>
-              <Icon name="remove"/> Cancel
+              <Icon name="remove"/> Cancelar
             </Button>
           </Modal.Actions>
         </Modal>
