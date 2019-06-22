@@ -45,7 +45,9 @@ class Login extends Component {
 
   displayError = (errors) => {
     return errors.map((error, i) => {
-      return <p key={i}>{error.message}</p>
+      if(error.message.includes("invalid")) {
+        return <p key={i}>Contraseña incorrecta</p>
+      }
     })
   }
 
