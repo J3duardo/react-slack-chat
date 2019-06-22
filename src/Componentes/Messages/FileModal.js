@@ -40,21 +40,21 @@ class FileModal extends Component {
   render() {
     return (
       <Modal basic open={this.props.modal} onClose={this.props.closeModal}>
-        <Modal.Header>Select an image file</Modal.Header>
+        <Modal.Header>Enviar imagen</Modal.Header>
         <Modal.Content>
           <Input
             fluid
-            label="File types: .jpg, .png"
+            label="Formatos permitidos: .jpg, .png"
             type="file"
             onChange={this.addFile}
           />
         </Modal.Content>
         <Modal.Actions>
           <Button color="green" inverted onClick={this.sendFile}>
-            <Icon name="checkmark"/> Send
+            <Icon name="checkmark"/> Enviar
           </Button>
           <Button color="red" inverted onClick={this.props.closeModal}>
-            <Icon name="remove"/> Cancel
+            <Icon name="remove"/> Cancelar
           </Button>
         </Modal.Actions>
       </Modal>
