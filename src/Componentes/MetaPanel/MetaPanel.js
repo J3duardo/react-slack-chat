@@ -63,7 +63,7 @@ class MetaPanel extends Component {
     return (
       <Segment>
         <Header as="h3" attached="top">
-          {this.state.currentChannel ? `About #${this.state.currentChannel.name}` : "No channel to display..."}
+          {this.state.currentChannel ? `Acerca de #${this.state.currentChannel.name}` : "No hay canal para mostrar"}
         </Header>
         <Accordion styled attached="true">
           <Accordion.Title
@@ -73,10 +73,10 @@ class MetaPanel extends Component {
           >
             <Icon name="dropdown"/>
             <Icon name="info"/>
-            Channel details
+            Detalles del canal
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 0}>
-            {this.state.currentChannel ? this.state.currentChannel.details : "No channel to display..."}      
+            {this.state.currentChannel ? this.state.currentChannel.details : "No hay canal para mostrar"}      
           </Accordion.Content>
 
           <Accordion.Title
@@ -86,11 +86,11 @@ class MetaPanel extends Component {
           >
             <Icon name="dropdown"/>
             <Icon name="user circle"/>
-            Top posters
+            Usuarios más activos
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 1}>
             <List>
-              {this.state.userPosts ? this.displayTopPosters(this.state.userPosts) : "No posts to display..."}
+              {this.state.userPosts ? this.displayTopPosters(this.state.userPosts) : "No hay posts para mostrar"}
             </List>
           </Accordion.Content>
 
@@ -101,11 +101,11 @@ class MetaPanel extends Component {
           >
             <Icon name="dropdown"/>
             <Icon name="pencil alternate"/>
-            Created by
+            Creado por
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 2}>
             <Header>
-              {this.state.currentChannel ? this.renderCreatedBy() : <p>No channel to display...</p>}
+              {this.state.currentChannel ? this.renderCreatedBy() : <p>No hay canal para mostrar</p>}
             </Header>
           </Accordion.Content>
         </Accordion>
