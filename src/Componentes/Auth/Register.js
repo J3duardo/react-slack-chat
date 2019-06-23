@@ -24,11 +24,16 @@ class Register extends Component {
       error = {message: "Debe completar todos los campos"};
       this.setState({errors: errors.concat(error)});
       return false;
-    } else if(!this.isPasswordValid(this.state)) {
-      error = {message: "Contraseña inválida"};
+    } else if(this.isPasswordValid(this.state) === "longitud") {
+      error = {message: "La contraseña debe tener más de 5 caracteres"};
       this.setState({errors: errors.concat(error)});
       return false;
-    } else {
+    } else if(this.isPasswordValid(this.state) === "no coinciden") {
+      error = {message: "Las contraseñas no coinciden"};
+      this.setState({errors: errors.concat(error)});
+      return false;
+    }
+     else {
       return true;
     }
   }
@@ -39,11 +44,11 @@ class Register extends Component {
 
   isPasswordValid = (state) => {
     if(state.password.length < 6 || state.passwordConfirmation < 6) {
-      return false;
+      return "longitud";
     } else if(state.password !== state.passwordConfirmation) {
-      return false;
+      return "no coinciden";
     } else {
-      return true;
+      return null;
     }
   }
 
@@ -93,7 +98,11 @@ class Register extends Component {
 
   displayError = (errors) => {
     return errors.map((error, i) => {
-      return <p key={i}>{error.message}</p>
+      if(error.message.includes("email")) {
+        return <p key={i}>El email proporcionado ya está registrado por otra cuenta</p>
+      } else {
+        return <p key={i}>{error.message}</p>
+      }
     })
   }
 
