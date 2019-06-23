@@ -43,6 +43,8 @@ class Messages extends Component {
       }, () => {
         if(this.state.channel && this.state.user) {
           this.addListeners(this.state.channel.id, this.state.user.uid);
+        } else {
+          this.addListeners(null, this.state.user.uid);
         }
       });
 
@@ -101,67 +103,73 @@ class Messages extends Component {
     const loadedMessages = [];
     const ref = this.getMessagesRef();
 
-    ref.child(id).on("child_added", (snap) => {
-      loadedMessages.push(snap.val());
-      this.setState({
-        messages: loadedMessages,
-        loadingMessages: false
+    if(!id) {
+      this.setState({loadingMessages: false, messages: []})
+    } else {
+      ref.child(id).on("child_added", (snap) => {
+        loadedMessages.push(snap.val());
+        this.setState({
+          messages: loadedMessages,
+          loadingMessages: false
+        });
+        this.usersCounter(loadedMessages);
+        this.countUserPost(loadedMessages);
       });
-      this.usersCounter(loadedMessages);
-      this.countUserPost(loadedMessages);
-    });
-
-    ref.child(id).once("value").then((snap) => {
-      if (snap.val() === null) {
-        this.setState({loadingMessages: false})
-      }
-    })
-
-    this.addToListeners(id, ref, "child_added")
+  
+      ref.child(id).once("value").then((snap) => {
+        if (snap.val() === null) {
+          this.setState({loadingMessages: false})
+        }
+      })
+  
+      this.addToListeners(id, ref, "child_added")
+    }
   };
 
   addTypingListeners = (id) => {
     let typingUsers = [];
-    this.state.typingRef
-    .child(id).on("child_added", snapshot => {
-      if(snapshot.key !== this.state.user.uid) {
-        typingUsers = [...typingUsers, {id: snapshot.key, name: snapshot.val()}]
-      }
-    });
-    this.setState({
-      typingUsers
-    });
-    this.addToListeners(id, this.state.typingRef, "child_added")
-
-    this.state.typingRef
-    .child(id).on("child_removed", snapshot => {
-      const index = typingUsers.findIndex(user => {
-        return user.uid === snapshot.key
+    if(id) {
+      this.state.typingRef
+      .child(id).on("child_added", snapshot => {
+        if(snapshot.key !== this.state.user.uid) {
+          typingUsers = [...typingUsers, {id: snapshot.key, name: snapshot.val()}]
+        }
       });
-      if(index !== -1) {
-        typingUsers = typingUsers.filter(user => {
-          return user.uid !== snapshot.key
+      this.setState({
+        typingUsers
+      });
+      this.addToListeners(id, this.state.typingRef, "child_added")
+  
+      this.state.typingRef
+      .child(id).on("child_removed", snapshot => {
+        const index = typingUsers.findIndex(user => {
+          return user.uid === snapshot.key
         });
-        this.setState({
-          typingUsers
-        })
-      }
-    });
-    this.addToListeners(id, this.state.typingRef, "child_removed")
-
-    this.state.connectedRef.on("value", snapshot => {
-      if(snapshot.val() === true) {
-        this.state.typingRef
-        .child(id)
-        .child(this.state.user.uid)
-        .onDisconnect()
-        .remove(err => {
-          if(err !== null) {
-            console.log(err)
-          }
-        })
-      }
-    })
+        if(index !== -1) {
+          typingUsers = typingUsers.filter(user => {
+            return user.uid !== snapshot.key
+          });
+          this.setState({
+            typingUsers
+          })
+        }
+      });
+      this.addToListeners(id, this.state.typingRef, "child_removed")
+  
+      this.state.connectedRef.on("value", snapshot => {
+        if(snapshot.val() === true) {
+          this.state.typingRef
+          .child(id)
+          .child(this.state.user.uid)
+          .onDisconnect()
+          .remove(err => {
+            if(err !== null) {
+              console.log(err)
+            }
+          })
+        }
+      })
+    }
   };
 
   countUserPost = (messages) => {
@@ -264,19 +272,21 @@ class Messages extends Component {
   }
 
   addUserStarListener = (channelId, userId) => {
-    this.state.usersRef
-    .child(userId)
-    .child("starred")
-    .once("value")
-    .then(data => {
-      if(data.val() !== null) {
-        const channelIds = Object.keys(data.val());
-        const prevStarred = channelIds.includes(channelId);
-        this.setState({
-          isChannelStarred: prevStarred
-        })
-      }
-    })
+    if(channelId) {
+      this.state.usersRef
+      .child(userId)
+      .child("starred")
+      .once("value")
+      .then(data => {
+        if(data.val() !== null) {
+          const channelIds = Object.keys(data.val());
+          const prevStarred = channelIds.includes(channelId);
+          this.setState({
+            isChannelStarred: prevStarred
+          })
+        }
+      })
+    }
   }
 
   displayTypingUsers = (users) => {
