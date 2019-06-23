@@ -100,6 +100,7 @@ class Messages extends Component {
   addMessageListener = (id) => {
     const loadedMessages = [];
     const ref = this.getMessagesRef();
+
     ref.child(id).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
       this.setState({
@@ -109,6 +110,12 @@ class Messages extends Component {
       this.usersCounter(loadedMessages);
       this.countUserPost(loadedMessages);
     });
+
+    ref.child(id).once("value").then((snap) => {
+      if (snap.val() === null) {
+        this.setState({loadingMessages: false})
+      }
+    })
 
     this.addToListeners(id, ref, "child_added")
   };
@@ -286,13 +293,17 @@ class Messages extends Component {
   }
 
   messagesSkeleton = (messages) => {
-    return messages.length === 0 ? (
-      <React.Fragment>
-        {[...Array(9)].map((el, i) => {
-          return <Skeleton key={i}/>
-        })}
-      </React.Fragment>
-    ) : null
+    if(messages.length === 0 && this.state.loadingMessages) {
+      return (
+        <React.Fragment>
+          {[...Array(9)].map((el, i) => {
+            return <Skeleton key={i}/>
+          })}
+        </React.Fragment>
+      )
+    } else if (messages.length === 0 && !this.state.loadingMessages) {
+      return <p>No hay mensajes para mostrar</p>
+    }
   }
 
   render() {
