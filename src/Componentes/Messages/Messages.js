@@ -214,7 +214,7 @@ class Messages extends Component {
     const channelMessages = [...this.state.messages];
     const results = channelMessages.filter(message => {
       if(message.content) {
-        return message.content.includes(this.state.searchTerm) || message.user.name.includes(this.state.searchTerm);
+        return message.content.toLowerCase().includes(this.state.searchTerm.toLowerCase()) || message.user.name.includes(this.state.searchTerm.toLowerCase());
       }
     });
     this.setState({
