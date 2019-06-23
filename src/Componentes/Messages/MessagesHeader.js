@@ -19,11 +19,11 @@ class MessagesHeader extends Component {
   render() {
     if(this.props.channelName === "") {
       return (
-        <Segment style={{textAlign: "center", border: "1px solid red"}}>
+        <Segment style={{textAlign: "center", border: "1px solid orange"}}>
           <h2>No hay canal para mostrar</h2>
           <p>
             Para comenzar a chatear cree un canal presionando el botón
-            <Icon name="add" color="red" size="large" style={{marginRight: "0px", margin: "0 3px"}}/> 
+            <Icon name="add" color="teal" size="large" style={{marginRight: "0px", margin: "0 3px"}}/> 
             ubicado en el panel lateral.</p>
         </Segment>
       )
