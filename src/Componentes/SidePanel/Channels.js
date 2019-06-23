@@ -142,7 +142,7 @@ class Channels extends Component {
             <span>
               <Icon name="exchange"/> Canales
             </span>{" "}
-            ({this.state.channels.length}) <Icon name="add" onClick={this.openModal}/>
+            ({this.state.channels.length}) <Icon name="add" size="large" color="teal" style={{cursor: "pointer"}} onClick={this.openModal}/>
           </Menu.Item>
           {this.renderChannels(this.state.channels)}
         </Menu.Menu>
