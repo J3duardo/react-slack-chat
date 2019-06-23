@@ -45,8 +45,10 @@ class Login extends Component {
 
   displayError = (errors) => {
     return errors.map((error, i) => {
-      if(error.message.includes("invalid")) {
+      if(error.code.includes("wrong-password")) {
         return <p key={i}>Contraseña incorrecta</p>
+      } else if(error.code.includes("user-not-found")) {
+        return <p key={i}>El usuario no existe</p>
       }
     })
   }
