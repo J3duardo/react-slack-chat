@@ -105,8 +105,10 @@ class Messages extends Component {
     const ref = this.getMessagesRef();
 
     if(id === null) {
-      this.setState({loadingMessages: false, messages: []})
-    } else {
+      this.setState({loadingMessages: false})
+    }
+
+    if(id) {
       ref.child(id).on("child_added", (snap) => {
         loadedMessages.push(snap.val());
         this.setState({
@@ -300,7 +302,7 @@ class Messages extends Component {
   }
 
   messagesSkeleton = (messages, channel) => {
-    if(messages.length === 0 && this.state.loadingMessages) {
+    if(messages.length === 0 && this.state.loadingMessages && channel) {
       return (
         <React.Fragment>
           {[...Array(9)].map((el, i) => {
@@ -311,7 +313,12 @@ class Messages extends Component {
     } else if (messages.length === 0 && !this.state.loadingMessages && channel) {
       return <p>Este canal no posee mensajes</p>
     } else if ( messages.length === 0 && !this.state.loadingMessages && !channel) {
-      return <p>No hay mensajes para mostrar: Para comenzar a chatear debe crear al menos un canal</p>
+      return (
+        <React.Fragment>
+          <p>No hay mensajes para mostrar</p>
+          <p>Para comenzar a chatear debe crear al menos un canal</p>
+        </React.Fragment>
+      )
     }
   }
 
