@@ -216,7 +216,7 @@ class MessagesForm extends Component {
   render() {
     return (
       <Segment className="message__form">
-        {this.state.emojiPicker && (
+        {this.state.emojiPicker && this.props.channelId && (
           <Picker 
             set="apple"
             className="emojipicker"
@@ -225,12 +225,13 @@ class MessagesForm extends Component {
             onSelect={this.addEmojiHandler}
           />
         )}
-        <Input 
+        <Input
           fluid
           name="message"
           style={{marginBottom: "0.7rem"}}
           label={
             <Button
+              disabled={!this.props.channelId}
               icon={this.state.emojiPicker ? "close" : "add"}
               content={this.state.emojiPicker ? "Cerrar" : "Añadir emoji"}
               onClick={this.togglePickerHandler}
@@ -240,13 +241,14 @@ class MessagesForm extends Component {
           placeholder="Escribir mensaje"
           onChange={this.onChangeHandler}
           value={this.state.message}
-          disabled={this.state.loading}
+          disabled={this.state.loading || !this.props.channelId}
           className={this.state.errors.some(err => { return err.message.includes("message")}) ? "error" : ""}
           onKeyDown={this.keyDownHandler}
           ref={this.inputRef}
         />
         <Button.Group icon widths="2">
           <Button
+            disabled={!this.props.channelId}
             color="orange"
             content="Enviar mensaje"
             labelPosition="left"
@@ -255,7 +257,7 @@ class MessagesForm extends Component {
           />
           <Button
             color="teal"
-            disabled={this.state.uploadState === "uploading"}
+            disabled={this.state.uploadState === "uploading" || !this.props.channelId}
             content="Enviar imagen"
             labelPosition="right"
             icon="cloud upload"
@@ -278,7 +280,7 @@ class MessagesForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    channelId: state.currentChannel.currentChannel ? state.currentChannel.currentChannel.id : "Loading...",
+    channelId: state.currentChannel.currentChannel ? state.currentChannel.currentChannel.id : null,
     currentUser: state.user.currentUser ? state.user.currentUser : "Loading..."
   }
 }
