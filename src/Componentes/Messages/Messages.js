@@ -43,8 +43,6 @@ class Messages extends Component {
       }, () => {
         if(this.state.channel && this.state.user) {
           this.addListeners(this.state.channel.id, this.state.user.uid);
-        } else {
-          this.addListeners(null, this.state.user.uid);
         }
       });
 
@@ -58,6 +56,9 @@ class Messages extends Component {
   componentDidMount() {
     if (this.starChannel.channel && this.state.user) {
       this.removeListeners(this.state.listeners)
+    }
+    if(!this.state.channel) {
+      this.addMessageListener(null)
     }
   }
 
@@ -103,7 +104,7 @@ class Messages extends Component {
     const loadedMessages = [];
     const ref = this.getMessagesRef();
 
-    if(!id) {
+    if(id === null) {
       this.setState({loadingMessages: false, messages: []})
     } else {
       ref.child(id).on("child_added", (snap) => {
@@ -128,48 +129,46 @@ class Messages extends Component {
 
   addTypingListeners = (id) => {
     let typingUsers = [];
-    if(id) {
-      this.state.typingRef
-      .child(id).on("child_added", snapshot => {
-        if(snapshot.key !== this.state.user.uid) {
-          typingUsers = [...typingUsers, {id: snapshot.key, name: snapshot.val()}]
-        }
+    this.state.typingRef
+    .child(id).on("child_added", snapshot => {
+      if(snapshot.key !== this.state.user.uid) {
+        typingUsers = [...typingUsers, {id: snapshot.key, name: snapshot.val()}]
+      }
+    });
+    this.setState({
+      typingUsers
+    });
+    this.addToListeners(id, this.state.typingRef, "child_added")
+
+    this.state.typingRef
+    .child(id).on("child_removed", snapshot => {
+      const index = typingUsers.findIndex(user => {
+        return user.uid === snapshot.key
       });
-      this.setState({
-        typingUsers
-      });
-      this.addToListeners(id, this.state.typingRef, "child_added")
-  
-      this.state.typingRef
-      .child(id).on("child_removed", snapshot => {
-        const index = typingUsers.findIndex(user => {
-          return user.uid === snapshot.key
+      if(index !== -1) {
+        typingUsers = typingUsers.filter(user => {
+          return user.uid !== snapshot.key
         });
-        if(index !== -1) {
-          typingUsers = typingUsers.filter(user => {
-            return user.uid !== snapshot.key
-          });
-          this.setState({
-            typingUsers
-          })
-        }
-      });
-      this.addToListeners(id, this.state.typingRef, "child_removed")
-  
-      this.state.connectedRef.on("value", snapshot => {
-        if(snapshot.val() === true) {
-          this.state.typingRef
-          .child(id)
-          .child(this.state.user.uid)
-          .onDisconnect()
-          .remove(err => {
-            if(err !== null) {
-              console.log(err)
-            }
-          })
-        }
-      })
-    }
+        this.setState({
+          typingUsers
+        })
+      }
+    });
+    this.addToListeners(id, this.state.typingRef, "child_removed")
+
+    this.state.connectedRef.on("value", snapshot => {
+      if(snapshot.val() === true) {
+        this.state.typingRef
+        .child(id)
+        .child(this.state.user.uid)
+        .onDisconnect()
+        .remove(err => {
+          if(err !== null) {
+            console.log(err)
+          }
+        })
+      }
+    })
   };
 
   countUserPost = (messages) => {
@@ -272,21 +271,19 @@ class Messages extends Component {
   }
 
   addUserStarListener = (channelId, userId) => {
-    if(channelId) {
-      this.state.usersRef
-      .child(userId)
-      .child("starred")
-      .once("value")
-      .then(data => {
-        if(data.val() !== null) {
-          const channelIds = Object.keys(data.val());
-          const prevStarred = channelIds.includes(channelId);
-          this.setState({
-            isChannelStarred: prevStarred
-          })
-        }
-      })
-    }
+    this.state.usersRef
+    .child(userId)
+    .child("starred")
+    .once("value")
+    .then(data => {
+      if(data.val() !== null) {
+        const channelIds = Object.keys(data.val());
+        const prevStarred = channelIds.includes(channelId);
+        this.setState({
+          isChannelStarred: prevStarred
+        })
+      }
+    })
   }
 
   displayTypingUsers = (users) => {
@@ -302,7 +299,7 @@ class Messages extends Component {
     }
   }
 
-  messagesSkeleton = (messages) => {
+  messagesSkeleton = (messages, channel) => {
     if(messages.length === 0 && this.state.loadingMessages) {
       return (
         <React.Fragment>
@@ -311,8 +308,10 @@ class Messages extends Component {
           })}
         </React.Fragment>
       )
-    } else if (messages.length === 0 && !this.state.loadingMessages) {
-      return <p>No hay mensajes para mostrar</p>
+    } else if (messages.length === 0 && !this.state.loadingMessages && channel) {
+      return <p>Este canal no posee mensajes</p>
+    } else if ( messages.length === 0 && !this.state.loadingMessages && !channel) {
+      return <p>No hay mensajes para mostrar: Para comenzar a chatear debe crear al menos un canal</p>
     }
   }
 
@@ -329,7 +328,7 @@ class Messages extends Component {
         />
         <Segment>
           <Comment.Group className="messages">
-            {this.messagesSkeleton(this.state.messages)}
+            {this.messagesSkeleton(this.state.messages, this.state.channel)}
             {this.state.searchTerm ?
             this.renderMessages(this.state.searchResults) :
             this.renderMessages(this.state.messages)}
