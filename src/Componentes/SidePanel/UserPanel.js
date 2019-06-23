@@ -47,7 +47,7 @@ class UserPanel extends Component {
   dropdownOptions = () => [
     {
       key: "user",
-      text: <span>Logeado como <strong>{this.props.userName}</strong></span>,
+      text: <span>Logueado como <strong>{this.props.userName}</strong></span>,
       disabled: true
     },
     {
