@@ -29,7 +29,8 @@ class Messages extends Component {
       typingRef: firebase.database().ref("typing"),
       typingUsers: [],
       connectedRef: firebase.database().ref(".info/connected"),
-      listeners: []
+      listeners: [],
+      showSkeleton: true
     };
     this.messagesScrollRef = React.createRef()
   }
@@ -301,16 +302,8 @@ class Messages extends Component {
     }
   }
 
-  messagesSkeleton = (messages, channel) => {
-    if(messages.length === 0 && this.state.loadingMessages && channel) {
-      return (
-        <React.Fragment>
-          {[...Array(9)].map((el, i) => {
-            return <Skeleton key={i}/>
-          })}
-        </React.Fragment>
-      )
-    } else if (messages.length === 0 && !this.state.loadingMessages && channel) {
+  messagesCheck = (messages, channel) => {
+    if (messages.length === 0 && !this.state.loadingMessages && channel) {
       return <p>Este canal no posee mensajes</p>
     } else if ( messages.length === 0 && !this.state.loadingMessages && !channel) {
       return (
@@ -320,6 +313,26 @@ class Messages extends Component {
         </React.Fragment>
       )
     }
+  }
+
+  renderSkeleton = () => {
+    this.hideSkeleton()
+    return (
+      <React.Fragment>
+        {[...Array(9)].map((el, i) => {
+          return <Skeleton key={i}/>
+        })}
+      </React.Fragment>
+    )
+  }
+
+  hideSkeleton = () => {
+    if(this.state.messages.length > 0) {
+      this.setState({showSkeleton: false})
+    }
+    setTimeout(() => {
+      this.setState({showSkeleton: false})
+    }, 2000)
   }
 
   render() {
@@ -335,7 +348,7 @@ class Messages extends Component {
         />
         <Segment>
           <Comment.Group className="messages">
-            {this.messagesSkeleton(this.state.messages, this.state.channel)}
+            {this.state.showSkeleton ? this.renderSkeleton() : this.messagesCheck(this.state.messages, this.state.channel)}
             {this.state.searchTerm ?
             this.renderMessages(this.state.searchResults) :
             this.renderMessages(this.state.messages)}
